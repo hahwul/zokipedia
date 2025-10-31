@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ config.title | default(value="Zokipedia") }}{% endblock title %}</title>
+    <meta name="description" content="{% block description %}{{ config.description | default(value="Zokipedia - A comprehensive collection of knowledge") }}{% endblock description %}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg-primary': 'rgb(20, 20, 20)',
+                        'bg-secondary': 'rgb(28, 28, 28)',
+                        'bg-tertiary': 'rgb(36, 36, 36)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom SCSS (compiled to CSS) -->
+    <link href="/style.css" rel="stylesheet">
+    
+    <!-- Fuse.js for search -->
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
+    
+    {% block extra_head %}{% endblock extra_head %}
+</head>
+<body class="bg-primary text-gray-100 min-h-screen">
+    {% block header %}
+    <header class="fixed top-0 z-50 w-full h-16 bg-primary border-b border-gray-800">
+        <div class="flex items-center justify-between h-full max-w-full px-4 mx-auto">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a href="/" class="text-xl font-bold text-white hover:text-blue-400 transition-colors">
+                    Zokipedia
+                </a>
+            </div>
+            
+            <!-- Search -->
+            <div class="flex items-center flex-1 max-w-lg mx-4">
+                <div class="relative w-full">
+                    <button class="w-full px-4 py-2 text-sm bg-secondary border border-gray-700 rounded-full text-left text-gray-400 hover:bg-tertiary transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-between" onclick="openSearch()">
+                        <span>Search...</span>
+                        <div class="flex items-center gap-1 text-xs bg-gray-700 px-2 py-0.5 rounded">
+                            <span>⌘</span><span>K</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Theme toggle / additional nav items could go here -->
+            <div class="flex items-center">
+                <!-- Placeholder for additional nav items -->
+            </div>
+        </div>
+    </header>
+    {% endblock header %}
+
+    <main class="pt-16">
+        {% block content %}{% endblock content %}
+    </main>
+
+    <!-- Search Modal -->
+    <div id="search-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-start justify-center min-h-screen pt-16 px-4">
+            <div class="bg-secondary border border-gray-700 rounded-lg w-full max-w-2xl shadow-xl">
+                <div class="p-4 border-b border-gray-700">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            id="modal-search-input"
+                            placeholder="Search for anything..."
+                            class="w-full px-4 py-3 text-lg bg-tertiary border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
+                            autofocus
+                        >
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-4">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div id="modal-search-results" class="max-h-96 overflow-y-auto">
+                    <div class="p-4 text-gray-400 text-center">
+                        Start typing to search...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search functionality -->
+    <script>
+        // Search functionality
+        let fuse;
+        let searchIndex = [];
+
+        // Load search index
+        fetch('/search_index.en.js')
+            .then(response => response.text())
+            .then(data => {
+                // Parse the JS file content to extract the JSON data
+                const match = data.match(/window\.searchIndex\s*=\s*(\[.*?\]);/s);
+                if (match) {
+                    searchIndex = JSON.parse(match[1]);
+                    fuse = new Fuse(searchIndex, {
+                        keys: ['title', 'body'],
+                        includeScore: true,
+                        threshold: 0.3,
+                        minMatchCharLength: 2
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Failed to load search index:', error);
+                // Fallback: try loading as JSON
+                fetch('/search_index.en.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        searchIndex = data;
+                        fuse = new Fuse(searchIndex, {
+                            keys: ['title', 'body'],
+                            includeScore: true,
+                            threshold: 0.3,
+                            minMatchCharLength: 2
+                        });
+                    });
+            });
+
+        // Modal functionality
+        const searchModal = document.getElementById('search-modal');
+        const modalSearchInput = document.getElementById('modal-search-input');
+        const modalSearchResults = document.getElementById('modal-search-results');
+
+        function openSearch() {
+            searchModal.classList.remove('hidden');
+            setTimeout(() => modalSearchInput.focus(), 100);
+        }
+
+        function closeSearch() {
+            searchModal.classList.add('hidden');
+            modalSearchInput.value = '';
+            modalSearchResults.innerHTML = '<div class="p-4 text-gray-400 text-center">Start typing to search...</div>';
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearch();
+            }
+            if (e.key === 'Escape') {
+                closeSearch();
+            }
+        });
+
+        // Modal click outside to close
+        searchModal.addEventListener('click', function(e) {
+            if (e.target === searchModal) {
+                closeSearch();
+            }
+        });
+
+        // Search input handler
+        modalSearchInput.addEventListener('input', function(e) {
+            const query = e.target.value.trim();
+            
+            if (query.length < 2) {
+                modalSearchResults.innerHTML = '<div class="p-4 text-gray-400 text-center">Start typing to search...</div>';
+                return;
+            }
+
+            if (!fuse) {
+                modalSearchResults.innerHTML = '<div class="p-4 text-gray-400 text-center">Search index loading...</div>';
+                return;
+            }
+
+            const results = fuse.search(query, { limit: 10 });
+            displayModalSearchResults(results);
+        });
+
+        function displayModalSearchResults(results) {
+            if (results.length === 0) {
+                modalSearchResults.innerHTML = '<div class="p-4 text-gray-400 text-center">No results found.</div>';
+                return;
+            }
+
+            const html = results.map(result => {
+                const item = result.item;
+                const excerpt = item.body ? item.body.substring(0, 200) + '...' : '';
+                return `
+                    <a href="${item.permalink}" class="block p-4 hover:bg-gray-700 border-b border-gray-700 last:border-b-0 transition-colors">
+                        <div class="font-semibold text-white mb-1">${item.title}</div>
+                        <div class="text-sm text-gray-400 leading-relaxed">${excerpt}</div>
+                    </a>
+                `;
+            }).join('');
+
+            modalSearchResults.innerHTML = html;
+        }
+
+        // Keyboard navigation in modal
+        let selectedIndex = -1;
+        
+        modalSearchInput.addEventListener('keydown', function(e) {
+            const items = modalSearchResults.querySelectorAll('a');
+            
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+                updateModalSelection(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                selectedIndex = Math.max(selectedIndex - 1, -1);
+                updateModalSelection(items);
+            } else if (e.key === 'Enter' && selectedIndex >= 0 && items[selectedIndex]) {
+                e.preventDefault();
+                items[selectedIndex].click();
+            }
+        });
+
+        function updateModalSelection(items) {
+            items.forEach((item, index) => {
+                if (index === selectedIndex) {
+                    item.classList.add('bg-gray-700');
+                } else {
+                    item.classList.remove('bg-gray-700');
+                }
+            });
+        }
+    </script>
+
+    {% block extra_js %}{% endblock extra_js %}
+</body>
+</html>
