@@ -32,7 +32,15 @@
     <link href="/style.css" rel="stylesheet">
 
     <!-- Fuse.js for search -->
-    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js" defer></script>
+    <script>
+      if (typeof window.Fuse === 'undefined') {
+        var s = document.createElement('script');
+        s.src = 'https://unpkg.com/fuse.js@6.6.2/dist/fuse.min.js';
+        s.defer = true;
+        document.head.appendChild(s);
+      }
+    </script>
 
     {% block extra_head %}{% endblock extra_head %}
 </head>
@@ -227,42 +235,109 @@
     </div>
 
     <!-- Search functionality -->
+    {% set current_lang = "en" %}
+    {% if page and page.lang %}{% set current_lang = page.lang %}
+    {% elif section and section.lang %}{% set current_lang = section.lang %}
+    {% elif lang %}{% set current_lang = lang %}{% endif %}
+    <script defer src="{{ get_url(path='search_index.' ~ current_lang ~ '.js') }}"></script>
+    <script defer src="{{ get_url(path='search_index.js') }}"></script>
     <script>
-        // Search functionality
+        // Search functionality (Fuse.js)
         let fuse;
         let searchIndex = [];
 
-        // Load search index
-        fetch('/search_index.en.js')
-            .then(response => response.text())
-            .then(data => {
-                // Parse the JS file content to extract the JSON data
-                const match = data.match(/window\.searchIndex\s*=\s*(\[.*?\]);/s);
-                if (match) {
-                    searchIndex = JSON.parse(match[1]);
-                    fuse = new Fuse(searchIndex, {
-                        keys: ['title', 'body'],
-                        includeScore: true,
-                        threshold: 0.3,
-                        minMatchCharLength: 2
-                    });
+        async function loadSearchIndex() {
+            // Use preloaded window.searchIndex if available
+            if (Array.isArray(window.searchIndex) && window.searchIndex.length) {
+                return normalizeIndex(window.searchIndex);
+            }
+            const candidates = [
+                "{{ get_url(path='search_index.' ~ current_lang ~ '.json') }}",
+                "{{ get_url(path='search_index.' ~ current_lang ~ '.js') }}",
+                "{{ get_url(path='search_index.json') }}",
+                "{{ get_url(path='search_index.js') }}"
+            ];
+
+            for (const url of candidates) {
+                try {
+                    const res = await fetch(url, { cache: 'no-store' });
+                    if (!res.ok) continue;
+
+                    if (url.endsWith('.json')) {
+                        const data = await res.json();
+                        return normalizeIndex(data);
+                    } else {
+                        const text = await res.text();
+                        // window.searchIndex = [...]
+                        let m = text.match(/window\.searchIndex\s*=\s*(\[.*?\]);/s);
+                        if (m) return normalizeIndex(JSON.parse(m[1]));
+                        // var/let/const searchIndex = [...]
+                        m = text.match(/(?:var|let|const)\s+searchIndex\s*=\s*(\[.*?\]);/s);
+                        if (m) return normalizeIndex(JSON.parse(m[1]));
+                        // searchIndex = JSON.parse('...')
+                        m = text.match(/searchIndex\s*=\s*JSON\.parse\(\s*(['"])([\s\S]*?)\1\s*\)/s);
+                        if (m) return normalizeIndex(JSON.parse(m[2]));
+                    }
+                } catch (_) {
+                    // try next candidate
                 }
-            })
-            .catch(error => {
-                console.error('Failed to load search index:', error);
-                // Fallback: try loading as JSON
-                fetch('/search_index.en.json')
-                    .then(response => response.json())
-                    .then(data => {
-                        searchIndex = data;
-                        fuse = new Fuse(searchIndex, {
-                            keys: ['title', 'body'],
-                            includeScore: true,
-                            threshold: 0.3,
-                            minMatchCharLength: 2
-                        });
-                    });
+            }
+            return [];
+        }
+
+        function normalizeIndex(raw) {
+            if (!Array.isArray(raw)) return [];
+            return raw.map(d => ({
+                title: d.title || d.name || '',
+                permalink: d.permalink || d.path || d.url || '#',
+                description: d.description || d.summary || '',
+                body: d.body || d.content || ''
+            }));
+        }
+
+        function initFuse(docs) {
+            searchIndex = docs;
+            fuse = new Fuse(searchIndex, {
+                includeScore: true,
+                threshold: 0.3,
+                minMatchCharLength: 2,
+                keys: [
+                    { name: 'title', weight: 0.6 },
+                    { name: 'description', weight: 0.3 },
+                    { name: 'body', weight: 1.0 }
+                ]
             });
+        }
+
+        // Kick off loading (wait for Fuse to be available)
+        function whenFuseReady(cb) {
+            if (window.Fuse) return cb();
+            const start = Date.now();
+            (function check() {
+                if (window.Fuse) return cb();
+                if (Date.now() - start > 5000) return cb(); // timeout after 5s to avoid blocking
+                setTimeout(check, 30);
+            })();
+        }
+        function bootSearch() {
+            whenFuseReady(() => {
+                // Prefer preloaded window.searchIndex if it appears shortly
+                const start = Date.now();
+                (function waitForWindowIndex() {
+                    if (Array.isArray(window.searchIndex) && window.searchIndex.length) {
+                        initFuse(normalizeIndex(window.searchIndex));
+                        return;
+                    }
+                    if (Date.now() - start > 5000) {
+                        // Fallback to fetching
+                        loadSearchIndex().then(initFuse);
+                        return;
+                    }
+                    setTimeout(waitForWindowIndex, 30);
+                })();
+            });
+        }
+        bootSearch();
 
         // Modal functionality
         const searchModal = document.getElementById('search-modal');
@@ -282,7 +357,7 @@
 
         // Keyboard shortcuts
         document.addEventListener('keydown', function(e) {
-            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
                 e.preventDefault();
                 openSearch();
             }
@@ -316,6 +391,10 @@
             displayModalSearchResults(results);
         });
 
+        function escapeHtml(str) {
+            return str.replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+        }
+
         function displayModalSearchResults(results) {
             if (results.length === 0) {
                 modalSearchResults.innerHTML = '<div class="p-4 text-gray-400 text-center">No results found.</div>';
@@ -324,11 +403,12 @@
 
             const html = results.map(result => {
                 const item = result.item;
-                const excerpt = item.body ? item.body.substring(0, 200) + '...' : '';
+                const rawExcerpt = item.description || item.body || '';
+                const excerpt = rawExcerpt.substring(0, 200) + (rawExcerpt.length > 200 ? '...' : '');
                 return `
                     <a href="${item.permalink}" class="block p-4 hover:bg-gray-700 border-b border-gray-700 last:border-b-0 transition-colors">
-                        <div class="font-semibold text-white mb-1">${item.title}</div>
-                        <div class="text-sm text-gray-400 leading-relaxed">${excerpt}</div>
+                        <div class="font-semibold text-white mb-1">${escapeHtml(item.title)}</div>
+                        <div class="text-sm text-gray-400 leading-relaxed">${escapeHtml(excerpt)}</div>
                     </a>
                 `;
             }).join('');
