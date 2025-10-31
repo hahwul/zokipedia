@@ -77,6 +77,28 @@ kbd {
     white-space: nowrap;
 }
 
+// Navigation links styling
+.nav-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+// Mobile menu animations
+#mobile-menu {
+    transition: all 0.2s ease-in-out;
+    
+    &.hidden {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    
+    &:not(.hidden) {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 // Prose styles for content
 .prose {
     color: $text-primary;
