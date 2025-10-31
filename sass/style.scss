@@ -63,6 +63,20 @@ header {
     border-bottom: 1px solid $border-color;
 }
 
+// Keyboard shortcut styling
+kbd {
+    background-color: $bg-secondary;
+    border: 1px solid $border-color;
+    border-radius: 0.25rem;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.1) inset;
+    color: $text-secondary;
+    display: inline-block;
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.25rem 0.5rem;
+    white-space: nowrap;
+}
+
 // Prose styles for content
 .prose {
     color: $text-primary;
