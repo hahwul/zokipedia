@@ -1,11 +1,10 @@
 +++
 title = "Web Application Security"
-date = 2024-01-14
+date = 2025-11-01
+updated = 2025-11-01
 description = "Web application security encompasses various measures and practices designed to protect web applications from threats and vulnerabilities."
 tags = ["security", "web", "application", "defense"]
 +++
-
-# Web Application Security
 
 Web application security is a branch of information security that deals specifically with security of websites, web applications and web services.
 

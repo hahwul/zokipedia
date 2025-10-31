@@ -1,11 +1,10 @@
 +++
 title = "SQL Injection"
-date = 2024-01-13
+date = 2025-11-01
+updated = 2025-11-01
 description = "SQL injection is a code injection technique that might destroy your database. It is one of the most common web hacking techniques."
 tags = ["security", "sql", "injection", "database", "attack"]
 +++
-
-# SQL Injection
 
 {% mermaid() %}
 quadrantChart

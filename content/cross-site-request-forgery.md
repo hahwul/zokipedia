@@ -1,11 +1,10 @@
 +++
 title = "Cross-site Request Forgery"
-date = 2024-01-15
+date = 2025-11-01
+updated = 2025-11-01
 description = "Cross-site request forgery (CSRF) is a type of malicious exploit of a website where unauthorized commands are submitted from a user that the web application trusts."
 tags = ["security", "web", "csrf", "attack"]
 +++
-
-# Cross-site Request Forgery
 
 Cross-site request forgery, also known as one-click attack or session riding and abbreviated as CSRF (sometimes pronounced sea-surf) or XSRF, is a type of malicious exploit of a website or web application where unauthorized commands are submitted from a user that the web application trusts.
 
