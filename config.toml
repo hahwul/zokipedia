@@ -20,6 +20,17 @@ nav_links = [
     { name = "GitHub", url = "https://github.com/hahwul/zokipedia", icon = "github" },
 ]
 
+# Navigation configuration
+nav_height = 80  # Height of the top navigation in pixels (default: 64px)
+
+# Sub logo - will appear on the far right of the navigation
+[extra.sublogo]
+url = "https://www.hahwul.com/images/logo.png"
+alt = "Hahwul Logo"
+link = "https://www.hahwul.com"
+width = 60
+height = 60
+
 # Site metadata
 site_description = "A comprehensive collection of knowledge"
 site_author = "Zokipedia Team"

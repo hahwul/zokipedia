@@ -7,7 +7,8 @@
 {% block content %}
 <div class="flex">
     <!-- Table of Contents - Left Sidebar -->
-    <nav class="toc-sidebar hidden lg:block w-64 fixed left-0 top-16 h-[calc(100vh-4rem)] overflow-y-auto p-6">
+    <nav class="toc-sidebar hidden lg:block w-64 fixed left-0 overflow-y-auto p-6"
+         style="top: {{ config.extra.nav_height | default(value=64) }}px; height: calc(100vh - {{ config.extra.nav_height | default(value=64) }}px);">
         <div class="space-y-2">
             <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Table of Contents</h3>
             <div id="toc" class="space-y-0.5">
@@ -93,7 +94,7 @@
 
 <!-- Mobile TOC Overlay -->
 <div id="mobile-toc" class="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40 hidden">
-    <div class="fixed right-0 top-0 h-full w-80 bg-primary border-l border-gray-800 p-6 overflow-y-auto">
+    <div class="fixed right-0 top-0 h-full w-80 bg-primary p-6 overflow-y-auto">
         <div class="flex justify-between items-center mb-6">
             <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Table of Contents</h3>
             <button id="close-mobile-toc" class="text-gray-400 hover:text-white">

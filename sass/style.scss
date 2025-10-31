@@ -60,7 +60,6 @@ input:focus {
 // Header styles
 header {
     background-color: $bg-primary;
-    border-bottom: 1px solid $border-color;
 }
 
 // Keyboard shortcut styling
@@ -77,11 +76,37 @@ kbd {
     white-space: nowrap;
 }
 
+// Dynamic navigation height utilities
+@for $i from 12 through 20 {
+    .pt-#{$i} {
+        padding-top: #{$i * 0.25}rem;
+    }
+}
+
+// Additional height utilities for larger nav heights
+@for $i from 21 through 32 {
+    .pt-#{$i} {
+        padding-top: #{$i * 0.25}rem;
+    }
+}
+
 // Navigation links styling
 .nav-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+}
+
+// Sub logo styling
+.sublogo-container {
+    img {
+        transition: transform 0.2s ease, opacity 0.2s ease;
+        
+        &:hover {
+            transform: scale(1.05);
+            opacity: 0.8;
+        }
+    }
 }
 
 // Mobile menu animations
@@ -243,7 +268,6 @@ kbd {
 // TOC styling with enhanced highlighting
 .toc-sidebar {
     background-color: $bg-primary;
-    border-right: 1px solid $border-color;
 }
 
 .toc-link {
