@@ -37,8 +37,18 @@
     {% block extra_head %}{% endblock extra_head %}
 </head>
 <body class="bg-primary text-gray-100 min-h-screen">
+    {% set hide_header = false %}
+    {% if section and section.permalink == config.base_url %}
+        {% set hide_header = true %}
+    {% endif %}
+    {% if page and page.extra and page.extra.hide_header %}
+        {% set hide_header = true %}
+    {% endif %}
+    {% if section and section.extra and section.extra.hide_header %}
+        {% set hide_header = true %}
+    {% endif %}
     {% block header %}
-    {% if not page or page.slug != "_index" %}
+    {% if not hide_header %}
     <header class="fixed top-0 z-50 w-full bg-primary"
             style="height: {{ config.extra.nav_height | default(value=64) }}px;">
         <div class="flex items-center justify-between h-full max-w-full px-4 mx-auto">
@@ -183,7 +193,7 @@
     {% endif %}
     {% endblock header %}
 
-    <main style="{% if not page or page.slug != '_index' %}padding-top: {{ config.extra.nav_height | default(value=64) }}px;{% endif %}">
+    <main style="{% if not hide_header %}padding-top: {{ config.extra.nav_height | default(value=64) }}px;{% endif %}">
         {% block content %}{% endblock content %}
     </main>
 
