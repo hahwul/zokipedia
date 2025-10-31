@@ -208,7 +208,7 @@
     <!-- Search Modal -->
     <div id="search-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
         <div class="flex items-start justify-center min-h-screen pt-16 px-4">
-            <div class="bg-secondary border border-gray-700 rounded-lg w-full max-w-2xl shadow-xl">
+            <div id="search-modal-panel" class="bg-secondary border border-gray-700 rounded-lg w-full max-w-2xl shadow-xl">
                 <div class="p-4 border-b border-gray-700">
                     <div class="relative">
                         <input
@@ -340,13 +340,22 @@
         bootSearch();
 
         // Modal functionality
-        const searchModal = document.getElementById('search-modal');
-        const modalSearchInput = document.getElementById('modal-search-input');
-        const modalSearchResults = document.getElementById('modal-search-results');
+                const searchModal = document.getElementById('search-modal');
+                const modalSearchInput = document.getElementById('modal-search-input');
+                const modalSearchResults = document.getElementById('modal-search-results');
+                let suppressOutsideCloseUntil = 0;
 
-        function openSearch() {
-            searchModal.classList.remove('hidden');
-            setTimeout(() => modalSearchInput.focus(), 100);
+        function openSearch(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            // Delay opening to avoid being closed by the same click event that triggered it
+            suppressOutsideCloseUntil = Date.now() + 200;
+            setTimeout(() => {
+                searchModal.classList.remove('hidden');
+                setTimeout(() => modalSearchInput.focus(), 100);
+            }, 0);
         }
 
         function closeSearch() {
@@ -359,7 +368,7 @@
         document.addEventListener('keydown', function(e) {
             if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
                 e.preventDefault();
-                openSearch();
+                openSearch(e);
             }
             if (e.key === 'Escape') {
                 closeSearch();
@@ -367,9 +376,14 @@
         });
 
         // Modal click outside to close
-        searchModal.addEventListener('click', function(e) {
-            if (e.target === searchModal) {
-                closeSearch();
+
+        document.addEventListener('click', function(e) {
+            if (Date.now() < suppressOutsideCloseUntil) return;
+            if (!searchModal.classList.contains('hidden')) {
+                const panel = document.getElementById('search-modal-panel');
+                if (panel && !panel.contains(e.target)) {
+                    closeSearch();
+                }
             }
         });
 
