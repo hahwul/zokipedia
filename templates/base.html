@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{{ config.title | default(value="Zokipedia") }}{% endblock title %}</title>
     <meta name="description" content="{% block description %}{{ config.description | default(value="Zokipedia - A comprehensive collection of knowledge") }}{% endblock description %}">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48">
-    
+
+    <!-- mermaid -->
+    <script src="{{ get_url(path="js/mermaid.min.js") | safe }}"></script>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -24,19 +27,19 @@
             }
         }
     </script>
-    
+
     <!-- Custom SCSS (compiled to CSS) -->
     <link href="/style.css" rel="stylesheet">
-    
+
     <!-- Fuse.js for search -->
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
-    
+
     {% block extra_head %}{% endblock extra_head %}
 </head>
 <body class="bg-primary text-gray-100 min-h-screen">
     {% block header %}
     {% if not page or page.slug != "_index" %}
-    <header class="fixed top-0 z-50 w-full bg-primary" 
+    <header class="fixed top-0 z-50 w-full bg-primary"
             style="height: {{ config.extra.nav_height | default(value=64) }}px;">
         <div class="flex items-center justify-between h-full max-w-full px-4 mx-auto">
             <!-- Logo -->
@@ -45,14 +48,14 @@
                     Zokipedia
                 </a>
             </div>
-            
+
             <!-- Right side: Navigation Links + Search + Sub Logo -->
             <div class="flex items-center gap-4">
                 <!-- Navigation Links from config -->
                 {% if config.extra.nav_links %}
                 <nav class="hidden md:flex items-center gap-3">
                     {% for link in config.extra.nav_links %}
-                    <a href="{{ link.url }}" 
+                    <a href="{{ link.url }}"
                        class="flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-secondary"
                        {% if link.url is starting_with("http") %}target="_blank" rel="noopener noreferrer"{% endif %}>
                         {% if link.icon %}
@@ -88,7 +91,7 @@
                     </a>
                     {% endfor %}
                 </nav>
-                
+
                 <!-- Mobile Navigation Menu -->
                 <div class="md:hidden">
                     <button id="mobile-menu-toggle" class="p-2 text-gray-300 hover:text-white transition-colors">
@@ -98,7 +101,7 @@
                     </button>
                 </div>
                 {% endif %}
-                
+
                 <!-- Search -->
                 <div class="relative">
                     <button class="px-4 py-2 text-sm bg-secondary border border-gray-700 rounded-full text-left text-gray-400 hover:bg-tertiary transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center gap-3 min-w-48" onclick="openSearch()">
@@ -111,16 +114,16 @@
                         </div>
                     </button>
                 </div>
-                
+
                 <!-- Sub Logo -->
                 {% if config.extra.sublogo %}
                 <div class="flex items-center ml-2">
                     {% if config.extra.sublogo.link %}
-                    <a href="{{ config.extra.sublogo.link }}" 
+                    <a href="{{ config.extra.sublogo.link }}"
                        class="flex items-center p-1 rounded-lg hover:bg-secondary transition-colors"
                        {% if config.extra.sublogo.link is starting_with("http") %}target="_blank" rel="noopener noreferrer"{% endif %}
                        title="{{ config.extra.sublogo.alt | default(value='Sub Logo') }}">
-                        <img src="{{ config.extra.sublogo.url }}" 
+                        <img src="{{ config.extra.sublogo.url }}"
                              alt="{{ config.extra.sublogo.alt | default(value='Sub Logo') }}"
                              class="rounded-md"
                              width="{{ config.extra.sublogo.width | default(value=32) }}"
@@ -128,7 +131,7 @@
                              loading="lazy">
                     </a>
                     {% else %}
-                    <img src="{{ config.extra.sublogo.url }}" 
+                    <img src="{{ config.extra.sublogo.url }}"
                          alt="{{ config.extra.sublogo.alt | default(value='Sub Logo') }}"
                          class="rounded-md"
                          width="{{ config.extra.sublogo.width | default(value=32) }}"
@@ -139,13 +142,13 @@
                 {% endif %}
             </div>
         </div>
-        
+
         <!-- Mobile Navigation Menu -->
         {% if config.extra.nav_links %}
         <div id="mobile-menu" class="hidden md:hidden bg-primary border-t border-gray-800">
             <nav class="px-4 py-3 space-y-1">
                 {% for link in config.extra.nav_links %}
-                <a href="{{ link.url }}" 
+                <a href="{{ link.url }}"
                    class="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-secondary"
                    {% if link.url is starting_with("http") %}target="_blank" rel="noopener noreferrer"{% endif %}>
                     {% if link.icon %}
@@ -190,8 +193,8 @@
             <div class="bg-secondary border border-gray-700 rounded-lg w-full max-w-2xl shadow-xl">
                 <div class="p-4 border-b border-gray-700">
                     <div class="relative">
-                        <input 
-                            type="text" 
+                        <input
+                            type="text"
                             id="modal-search-input"
                             placeholder="Search for anything..."
                             class="w-full px-4 py-3 text-lg bg-tertiary border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
@@ -288,7 +291,7 @@
         // Search input handler
         modalSearchInput.addEventListener('input', function(e) {
             const query = e.target.value.trim();
-            
+
             if (query.length < 2) {
                 modalSearchResults.innerHTML = '<div class="p-4 text-gray-400 text-center">Start typing to search...</div>';
                 return;
@@ -325,10 +328,10 @@
 
         // Keyboard navigation in modal
         let selectedIndex = -1;
-        
+
         modalSearchInput.addEventListener('keydown', function(e) {
             const items = modalSearchResults.querySelectorAll('a');
-            
+
             if (e.key === 'ArrowDown') {
                 e.preventDefault();
                 selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
@@ -352,7 +355,7 @@
                 }
             });
         }
-        
+
         // Mobile menu functionality
         const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -369,6 +372,13 @@
                 }
             });
         }
+    </script>
+    <script>
+        // Mermaid initialization
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark'
+        });
     </script>
 
     {% block extra_js %}{% endblock extra_js %}

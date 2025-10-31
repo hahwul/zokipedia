@@ -7,6 +7,23 @@ tags = ["security", "sql", "injection", "database", "attack"]
 
 # SQL Injection
 
+{% mermaid() %}
+quadrantChart
+    title Reach and engagement of campaigns
+    x-axis Low Reach --> High Reach
+    y-axis Low Engagement --> High Engagement
+    quadrant-1 We should expand
+    quadrant-2 Need to promote
+    quadrant-3 Re-evaluate
+    quadrant-4 May be improved
+    Campaign A: [0.3, 0.6]
+    Campaign B: [0.45, 0.23]
+    Campaign C: [0.57, 0.69]
+    Campaign D: [0.78, 0.34]
+    Campaign E: [0.40, 0.34]
+    Campaign F: [0.35, 0.78]
+{% end %}
+
 SQL injection is a code injection technique used to attack data-driven applications, in which malicious SQL statements are inserted into an entry field for execution.
 
 ## How SQL Injection Works
@@ -131,7 +148,7 @@ CREATE PROCEDURE GetUser
     @Password NVARCHAR(50)
 AS
 BEGIN
-    SELECT * FROM Users 
+    SELECT * FROM Users
     WHERE Username = @Username AND Password = @Password
 END
 ```
