@@ -22,16 +22,16 @@
         <article class="max-w-6xl mx-auto px-6 py-8">
             <!-- Page Header -->
             <header class="mb-8">
-                <h1 class="text-4xl font-bold text-white mb-4">{{ page.title }}</h1>
                 {% if page.date %}
                 <div class="flex items-center text-sm text-gray-400 mb-4">
-                    <time datetime="{{ page.date }}">{{ page.date | date(format="%B %d, %Y") }}</time>
                     {% if page.updated %}
-                    <span class="mx-2">•</span>
-                    <span>Updated: {{ page.updated | date(format="%B %d, %Y") }}</span>
+                    <time datetime="{{ page.date }}">Created at {{ page.date | date(format="%B %d, %Y") }}</time>
+                    {% else %}
+                    <span>Updated at {{ page.updated | date(format="%B %d, %Y") }}</span>
                     {% endif %}
                 </div>
                 {% endif %}
+                <h1 class="text-4xl font-bold text-white mb-4">{{ page.title }}</h1>
 
                 {% if page.taxonomies.tags %}
                 <div class="flex flex-wrap gap-2">
