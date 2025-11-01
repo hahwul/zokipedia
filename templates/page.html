@@ -25,9 +25,9 @@
                 {% if page.date %}
                 <div class="flex items-center text-sm text-gray-400 mb-4">
                     {% if page.updated %}
-                    <time datetime="{{ page.date }}">Created at {{ page.date | date(format="%B %d, %Y") }}</time>
-                    {% else %}
                     <span>Updated at {{ page.updated | date(format="%B %d, %Y") }}</span>
+                    {% else %}
+                    <time datetime="{{ page.date }}">Created at {{ page.date | date(format="%B %d, %Y") }}</time>
                     {% endif %}
                 </div>
                 {% endif %}
