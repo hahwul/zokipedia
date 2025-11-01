@@ -37,3 +37,14 @@ height = 60
 # Site metadata
 site_description = "A comprehensive collection of knowledge"
 site_author = "Zokipedia Team"
+
+# Footer configuration
+[extra.footer]
+# Text links to show in the footer
+links = [
+    { text = "Terms of Service", url = "/terms" },
+    { text = "Privacy Policy", url = "/privacy" },
+    { text = "Contact", url = "/contact" }
+]
+# Copyright text (supports plain text)
+copyright = "© HAHWUL. All rights reserved."
