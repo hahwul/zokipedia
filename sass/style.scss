@@ -18,7 +18,10 @@ $border-color: #374151;
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+        sans-serif;
     line-height: 1.6;
     background-color: $bg-primary;
     color: $text-primary;
@@ -67,7 +70,9 @@ kbd {
     background-color: $bg-secondary;
     border: 1px solid $border-color;
     border-radius: 0.25rem;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.1) inset;
+    box-shadow:
+        0 1px 1px rgba(0, 0, 0, 0.2),
+        0 2px 0 0 rgba(255, 255, 255, 0.1) inset;
     color: $text-secondary;
     display: inline-block;
     font-size: 0.75rem;
@@ -100,8 +105,10 @@ kbd {
 // Sub logo styling
 .sublogo-container {
     img {
-        transition: transform 0.2s ease, opacity 0.2s ease;
-        
+        transition:
+            transform 0.2s ease,
+            opacity 0.2s ease;
+
         &:hover {
             transform: scale(1.05);
             opacity: 0.8;
@@ -112,12 +119,12 @@ kbd {
 // Mobile menu animations
 #mobile-menu {
     transition: all 0.2s ease-in-out;
-    
+
     &.hidden {
         opacity: 0;
         transform: translateY(-10px);
     }
-    
+
     &:not(.hidden) {
         opacity: 1;
         transform: translateY(0);
@@ -129,7 +136,12 @@ kbd {
     color: $text-primary;
     max-width: none;
 
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         color: #ffffff;
         font-weight: 600;
         margin-top: 2rem;
@@ -220,7 +232,8 @@ kbd {
         color: $text-secondary;
     }
 
-    ul, ol {
+    ul,
+    ol {
         margin: 1.25rem 0;
         padding-left: 1.625rem;
     }
@@ -234,7 +247,8 @@ kbd {
         margin: 1.5rem 0;
         border-collapse: collapse;
 
-        th, td {
+        th,
+        td {
             border: 1px solid $border-color;
             padding: 0.75rem;
             text-align: left;
@@ -268,6 +282,35 @@ kbd {
 // TOC styling with enhanced highlighting
 .toc-sidebar {
     background-color: $bg-primary;
+
+    // Subtle, thin scrollbar
+    &::-webkit-scrollbar {
+        width: 3px;
+        height: 3px;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.12);
+        border-radius: 9999px;
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            transparent 0,
+            black 25%,
+            black 75%,
+            transparent 100%
+        );
+        -webkit-mask-size: 100% 100%;
+        -webkit-mask-repeat: no-repeat;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    // Firefox
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
 }
 
 .toc-link {
@@ -308,7 +351,7 @@ kbd {
 .card {
     background-color: $bg-secondary;
     border: 1px solid $border-color;
-    
+
     &:hover {
         background-color: $bg-tertiary;
     }
@@ -339,12 +382,12 @@ kbd {
             font-size: 1.875rem;
             line-height: 2.25rem;
         }
-        
+
         h2 {
             font-size: 1.5rem;
             line-height: 2rem;
         }
-        
+
         h3 {
             font-size: 1.25rem;
             line-height: 1.75rem;
@@ -399,16 +442,21 @@ a:focus-visible {
     #main-search-results {
         display: none !important;
     }
-    
+
     body {
         color: black;
         background: white;
     }
-    
+
     .prose {
         color: black;
 
-        h1, h2, h3, h4, h5, h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             color: black;
         }
     }
