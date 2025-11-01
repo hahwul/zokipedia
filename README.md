@@ -75,6 +75,54 @@ tags = ["tag1", "tag2"]
 Your content here...
 ```
 
+## Shortcodes
+
+### Math Shortcode
+
+The math shortcode allows you to include mathematical expressions using LaTeX syntax:
+
+**Display Math:**
+```markdown
+{% math() %}
+E = mc^2
+{% end %}
+```
+
+**Inline Math:**
+Use dollar signs for inline math: `$E = mc^2$`
+
+**Examples:**
+```markdown
+Sum formula:
+{% math() %}
+\sum_{i=1}^{n} i = \frac{n(n+1)}{2}
+{% end %}
+
+Quadratic formula: $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$
+
+Matrix:
+{% math() %}
+\begin{bmatrix}
+a & b \\
+c & d
+\end{bmatrix}
+{% end %}
+```
+
+The math rendering is powered by [KaTeX](https://katex.org/), supporting a wide range of LaTeX mathematical notation.
+
+### Mermaid Shortcode
+
+Include diagrams using Mermaid syntax:
+
+```markdown
+{% mermaid() %}
+graph TD
+    A[Start] --> B[Process]
+    B --> C[End]
+{% end %}
+```
+
 ## Search Functionality
 
 The search functionality uses:
