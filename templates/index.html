@@ -33,8 +33,7 @@
             <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {% set_global shown_count = 0 %}
                 {% for page in section.pages %}
-                    {% if not page.extra or not page.extra.hide_from_lists %}
-                        {% if shown_count < 6 %}
+                    {% if (not page.extra or not page.extra.hide_from_lists) and shown_count < 6 %}
                 <a href="{{ page.permalink }}" class="card block p-6 rounded-lg transition-colors">
                     <h3 class="text-lg font-medium text-white mb-2">{{ page.title }}</h3>
                     {% if page.summary %}
@@ -48,8 +47,7 @@
                     </div>
                     {% endif %}
                 </a>
-                            {% set_global shown_count = shown_count + 1 %}
-                        {% endif %}
+                        {% set_global shown_count = shown_count + 1 %}
                     {% endif %}
                 {% endfor %}
             </div>
