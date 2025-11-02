@@ -21,7 +21,7 @@
 
     {% set_global visible_count = 0 %}
     {% for p in sorted_pages %}
-        {% if p.in_search_index is not defined or p.in_search_index != false %}
+        {% if not p.extra or not p.extra.hide_from_lists %}
             {% set_global visible_count = visible_count + 1 %}
         {% endif %}
     {% endfor %}
@@ -36,8 +36,7 @@
     <div class="space-y-1">
         {% set current_letter = "" %}
         {% for page in sorted_pages %}
-
-            {% if page.in_search_index is not defined or page.in_search_index != false %}
+            {% if not page.extra or not page.extra.hide_from_lists %}
 
                 {% set first_letter = page.title | truncate(length=1, end="") | upper %}
 
