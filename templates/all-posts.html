@@ -19,13 +19,9 @@
     <!-- Sort pages alphabetically by title -->
     {% set sorted_pages = all_pages | sort(attribute="title") %}
 
-
-
-
-
     {% set_global visible_count = 0 %}
     {% for p in sorted_pages %}
-        {% if p.template is not defined or p.template != "all-posts.html" %}
+        {% if p.in_search_index is not defined or p.in_search_index != false %}
             {% set_global visible_count = visible_count + 1 %}
         {% endif %}
     {% endfor %}
@@ -41,7 +37,7 @@
         {% set current_letter = "" %}
         {% for page in sorted_pages %}
 
-            {% if page.template is not defined or page.template != "all-posts.html" %}
+            {% if page.in_search_index is not defined or page.in_search_index != false %}
 
                 {% set first_letter = page.title | truncate(length=1, end="") | upper %}
 
