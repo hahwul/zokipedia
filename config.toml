@@ -18,11 +18,9 @@ highlight_code = true
 [extra]
 # Put all your custom variables here
 
-# Enable/disable the alphabetical index page showing all posts
-enable_index_page = true
-
 # Navigation links - will appear in the header on the right side
 nav_links = [
+    { name = "All posts", url = "/all-posts"},
     { name = "GitHub", url = "https://github.com/hahwul/zokipedia", icon = "github" },
 ]
 

@@ -87,7 +87,7 @@
                         <span class="hidden lg:inline">All Posts</span>
                     </a>
                     {% endif %}
-                    
+
                     {% for link in config.extra.nav_links %}
                     <a href="{{ link.url }}"
                        class="flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-secondary"
@@ -178,20 +178,9 @@
         </div>
 
         <!-- Mobile Navigation Menu -->
-        {% if config.extra.nav_links or config.extra.enable_index_page %}
+        {% if config.extra.nav_links %}
         <div id="mobile-menu" class="hidden md:hidden bg-primary border-t border-gray-800">
             <nav class="px-4 py-3 space-y-1">
-                <!-- All Posts link (if enabled) -->
-                {% if config.extra.enable_index_page %}
-                <a href="/all-posts"
-                   class="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-secondary">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-                    </svg>
-                    All Posts
-                </a>
-                {% endif %}
-                
                 {% for link in config.extra.nav_links %}
                 <a href="{{ link.url }}"
                    class="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-secondary"
