@@ -1,6 +1,8 @@
 # The URL the site will be built for
 base_url = "https://zokipedia.hahwul.com"
 
+description = "A comprehensive collection of knowledge"
+
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
 
@@ -43,9 +45,6 @@ height = 60
 # link = "https://example.com"             # optional - wraps the image with a link
 # width = 1200                             # optional - omit to use intrinsic size
 # height = 320                             # optional - omit to use intrinsic size
-# Site metadata
-site_description = "A comprehensive collection of knowledge"
-site_author = "Zokipedia Team"
 
 # Footer configuration
 [extra.footer]
