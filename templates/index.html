@@ -60,28 +60,32 @@
             </div>
         </div>
 
-        <!-- Recent or Featured Articles -->
+        <!-- Recent Articles -->
         {% if section and section.pages %}
-        <div class="mt-8">
-            <div class="text-center mb-3">
-                <h2 class="text-sm font-medium text-gray-400 uppercase tracking-wide">Recent</h2>
+        <div class="mt-16">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-semibold text-gray-300 uppercase tracking-wide">Recent</h2>
             </div>
-            <div class="max-w-3xl mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div class="max-w-4xl mx-auto">
+                <ul class="space-y-4">
                     {% set_global shown_count = 0 %}
                     {% for page in section.pages %}
                         {% if (not page.extra or not page.extra.hide_from_lists) and shown_count < 6 %}
-                    <a href="{{ page.permalink }}" class="flex items-center justify-between text-sm text-gray-300 hover:text-white px-3 py-2 rounded-lg hover:bg-tertiary border border-gray-800">
-                        <span class="truncate">{{ page.title }}</span>
-                        {% if page.date %}
-                        <span class="ml-3 flex-shrink-0 text-xs text-gray-500">{{ page.date | date(format="%b %d") }}</span>
-                        {% endif %}
-                    </a>
+                    <li>
+                        <a href="{{ page.permalink }}" class="block text-gray-300 hover:text-white transition-colors">
+                            <div class="flex items-center justify-between">
+                                <span class="text-lg font-medium">{{ page.title }}</span>
+                                {% if page.date %}
+                                <span class="text-sm text-gray-500">{{ page.date | date(format="%b %d") }}</span>
+                                {% endif %}
+                            </div>
+                        </a>
+                    </li>
                             {% set_global shown_count = shown_count + 1 %}
                         {% endif %}
                     {% endfor %}
-                </div>
-                <div class="mt-4 border-t border-gray-800"></div>
+                </ul>
+                <div class="mt-8 border-t border-gray-800"></div>
             </div>
         </div>
         {% endif %}
