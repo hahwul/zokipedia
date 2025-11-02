@@ -75,18 +75,8 @@
             <!-- Right side: Navigation Links + Search + Sub Logo -->
             <div class="flex items-center gap-4">
                 <!-- Navigation Links from config -->
-                {% if config.extra.nav_links or config.extra.enable_index_page %}
+                {% if config.extra.nav_links %}
                 <nav class="hidden md:flex items-center gap-3">
-                    <!-- All Posts link (if enabled) -->
-                    {% if config.extra.enable_index_page %}
-                    <a href="/all-posts"
-                       class="flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-secondary">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-                        </svg>
-                        <span class="hidden lg:inline">All Posts</span>
-                    </a>
-                    {% endif %}
 
                     {% for link in config.extra.nav_links %}
                     <a href="{{ link.url }}"
