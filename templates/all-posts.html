@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} - Zokipedia{% endblock title %}
+
+{% block description %}{{ page.description | default(value="Alphabetical index of all articles") }}{% endblock description %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-6 py-8">
+    <!-- Page Header -->
+    <header class="mb-12">
+        <h1 class="text-4xl font-bold text-white mb-4">{{ page.title }}</h1>
+        <p class="text-lg text-gray-400">{{ page.description | default(value="Browse all articles in alphabetical order") }}</p>
+    </header>
+
+    <!-- Get all pages from the root section -->
+    {% set root_section = get_section(path="_index.md") %}
+    {% set all_pages = root_section.pages %}
+
+    <!-- Sort pages alphabetically by title -->
+    {% set sorted_pages = all_pages | sort(attribute="title") %}
+
+
+
+
+
+    {% set_global visible_count = 0 %}
+    {% for p in sorted_pages %}
+        {% if p.template is not defined or p.template != "all-posts.html" %}
+            {% set_global visible_count = visible_count + 1 %}
+        {% endif %}
+    {% endfor %}
+
+    <!-- Display total count -->
+    <div class="mb-8 text-gray-400">
+        <p>Total articles: <span class="font-semibold text-white">{{ visible_count }}</span></p>
+    </div>
+
+    <!-- Alphabetical Index -->
+    {% if visible_count > 0 %}
+    <div class="space-y-1">
+        {% set current_letter = "" %}
+        {% for page in sorted_pages %}
+
+            {% if page.template is not defined or page.template != "all-posts.html" %}
+
+                {% set first_letter = page.title | truncate(length=1, end="") | upper %}
+
+                <!-- Show letter heading when letter changes -->
+                {% if first_letter != current_letter %}
+                    {% set_global current_letter = first_letter %}
+                    <div class="mt-8 mb-4 first:mt-0">
+                        <h2 class="text-3xl font-bold text-blue-400 border-b border-gray-700 pb-2">{{ first_letter }}</h2>
+                    </div>
+                {% endif %}
+
+                <!-- Article Link -->
+                <a href="{{ page.permalink }}" class="block p-4 rounded-lg hover:bg-secondary transition-colors group">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex-1 min-w-0">
+                            <h3 class="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors mb-1">
+                                {{ page.title }}
+                            </h3>
+                            {% if page.description %}
+                            <p class="text-sm text-gray-400 line-clamp-2">{{ page.description }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Date and Tags -->
+                        <div class="flex flex-col items-end gap-2 text-right">
+                            {% if page.date %}
+                            <div class="text-xs text-gray-500 whitespace-nowrap">
+                                {{ page.date | date(format="%b %d, %Y") }}
+                            </div>
+                            {% endif %}
+
+                            {% if page.taxonomies.tags %}
+                            <div class="flex flex-wrap gap-1 justify-end">
+                                {% for tag in page.taxonomies.tags | slice(end=3) %}
+                                <span class="px-2 py-0.5 text-xs bg-gray-700 text-gray-300 rounded">
+                                    {{ tag }}
+                                </span>
+                                {% endfor %}
+                                {% if page.taxonomies.tags | length > 3 %}
+                                <span class="px-2 py-0.5 text-xs bg-gray-700 text-gray-300 rounded">
+                                    +{{ page.taxonomies.tags | length - 3 }}
+                                </span>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-16 text-gray-400">
+        <p>No articles found.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}
