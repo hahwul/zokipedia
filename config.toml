@@ -35,6 +35,14 @@ link = "https://www.hahwul.com"
 width = 60
 height = 60
 
+# Home hero image (shown above the search on the homepage)
+# Configure this block to display an image above the search on the home page.
+# [extra.home_image]
+# url = "https://example.com/banner.png"   # required
+# alt = "Homepage banner"                  # recommended
+# link = "https://example.com"             # optional - wraps the image with a link
+# width = 1200                             # optional - omit to use intrinsic size
+# height = 320                             # optional - omit to use intrinsic size
 # Site metadata
 site_description = "A comprehensive collection of knowledge"
 site_author = "Zokipedia Team"
