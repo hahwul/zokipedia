@@ -281,18 +281,21 @@ kbd {
 
 // TOC styling with enhanced highlighting
 .toc-sidebar {
+    position: fixed;
+    top: 80px;
+    height: calc(100vh - 80px);
     background-color: $bg-primary;
 
-    // Subtle, thin scrollbar
+    // More visible scrollbar for better usability
     &::-webkit-scrollbar {
-        width: 3px;
-        height: 3px;
+        width: 6px;
+        height: 6px;
     }
     &::-webkit-scrollbar-track {
         background: transparent;
     }
     &::-webkit-scrollbar-thumb {
-        background-color: rgba(255, 255, 255, 0.12);
+        background-color: rgba(255, 255, 255, 0.25);
         border-radius: 9999px;
         -webkit-mask-image: linear-gradient(
             to bottom,
@@ -305,12 +308,12 @@ kbd {
         -webkit-mask-repeat: no-repeat;
     }
     &::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.4);
     }
 
     // Firefox
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
 }
 
 .toc-link {

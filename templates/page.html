@@ -7,8 +7,7 @@
 {% block content %}
 <div class="flex">
     <!-- Table of Contents - Left Sidebar -->
-    <nav class="toc-sidebar hidden lg:block w-72 fixed left-0 overflow-y-auto p-8 bg-secondary/20 backdrop-blur-sm
-         style="top: {{ config.extra.nav_height | default(value=64) }}px; height: calc(100vh - {{ config.extra.nav_height | default(value=64) }}px);">
+    <nav class="toc-sidebar hidden lg:block w-72 fixed left-0 overflow-y-auto p-8 bg-secondary/20 backdrop-blur-sm">
         <div class="space-y-3">
             <h3 class="text-sm font-bold text-gray-300 uppercase tracking-wider mb-4">Table of Contents</h3>
             <div id="toc" class="space-y-1">
