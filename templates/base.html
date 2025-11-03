@@ -471,6 +471,12 @@
     <script>
         // KaTeX manual rendering for math blocks
         document.addEventListener("DOMContentLoaded", function() {
+            // Wait for KaTeX to be available
+            if (typeof katex === 'undefined') {
+                console.error('KaTeX is not loaded');
+                return;
+            }
+            
             // Render display math blocks (created by math shortcode)
             document.querySelectorAll('.math-block').forEach(function(element) {
                 try {
