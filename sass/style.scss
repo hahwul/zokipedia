@@ -314,7 +314,9 @@ kbd {
 }
 
 .toc-link {
-    transition: color 0.2s ease;
+    transition:
+        color 0.2s ease,
+        text-shadow 0.2s ease;
     color: $text-light;
     padding: 0.25rem 0.75rem;
     display: block;
@@ -329,10 +331,11 @@ kbd {
         color: $text-secondary;
     }
 
-    // Active/highlighted state - text color only
+    // Active/highlighted state - text color and soft glow effect
     &.active {
         color: #ffffff !important; // Pure white for maximum contrast
         font-weight: 500;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.3); // Soft glow effect
     }
 }
 
