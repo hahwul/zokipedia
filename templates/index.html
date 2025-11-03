@@ -53,48 +53,34 @@
                         </svg>
                         <span class="font-semibold">Search for anything...</span>
                     </div>
-                    <div class="hidden sm:flex items-center gap-1 text-sm bg-gray-500/80 px-3 py-1.5 rounded-lg backdrop-blur-sm">
+                    <div class="hidden sm:flex items-center gap-1 text-sm bg-primary px-3 py-1.5 rounded-lg backdrop-blur-sm">
                         <span>⌘</span><span>K</span>
                     </div>
                 </button>
             </div>
-        </div>
 
-        <!-- Recent Articles -->
-        {% if section and section.pages %}
-        <div class="mt-20">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl font-bold text-white uppercase tracking-wider">Recent</h2>
-            </div>
-            <div class="max-w-5xl mx-auto">
-                <ul class="space-y-6">
+            <!-- Recent Articles -->
+            {% if section and section.pages %}
+            <div class="mt-8 text-center">
+                <ul class="space-y-3">
                     {% set_global shown_count = 0 %}
                     {% for page in section.pages %}
                         {% if (not page.extra or not page.extra.hide_from_lists) and shown_count < 6 %}
-                    <li class="border-b border-gray-800/50 pb-4 last:border-b-0">
-                        <a href="{{ page.permalink }}" class="block text-gray-300 hover:text-white hover:underline decoration-blue-400 transition-all duration-300 group">
-                            <div class="flex items-center justify-between">
-                                <span class="text-xl font-semibold group-hover:translate-x-1 transition-transform duration-300">{{ page.title }}</span>
-                                {% if page.date %}
-                                <span class="text-sm text-gray-500 group-hover:text-gray-400 transition-colors">{{ page.date | date(format="%b %d") }}</span>
-                                {% endif %}
-                            </div>
+                    <li class="text-sm text-gray-400 hover:text-gray-300 transition-colors">
+                        <a href="{{ page.permalink }}" class="hover:underline decoration-blue-400">
+                            <span class="font-medium">{{ page.title }}</span>
+                            {% if page.date %}
+                            <span class="text-xs text-gray-500 ml-2">{{ page.date | date(format="%b %d") }}</span>
+                            {% endif %}
                         </a>
                     </li>
                             {% set_global shown_count = shown_count + 1 %}
                         {% endif %}
                     {% endfor %}
                 </ul>
-                <div class="mt-12 border-t border-gray-700"></div>
             </div>
-        </div>
-        {% endif %}
+            {% endif %}
 
-        <!-- Navigation hint -->
-        <div class="mt-16 text-center">
-            <p class="text-gray-300 text-base font-light">
-                Press <kbd class="px-3 py-2 bg-gray-700 rounded-lg text-sm font-medium shadow">⌘K</kbd> to search or browse articles above
-            </p>
         </div>
     </div>
 </div>
