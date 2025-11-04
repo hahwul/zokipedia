@@ -1,0 +1,18 @@
+{
+  "name": "zokipedia",
+  "version": "1.0.0",
+  "description": "A comprehensive knowledge base built with Zola, featuring a dark theme inspired by Grokipedia.",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "tailwindcss --input tailwind.css --output static/css/tailwind.min.css --minify",
+    "watch:css": "tailwindcss --input tailwind.css --output static/css/tailwind.min.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@tailwindcss/cli": "4.1",
+    "tailwindcss": "4.1"
+  }
+}
