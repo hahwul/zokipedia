@@ -208,6 +208,6 @@ MIT License - feel free to use this theme for your own projects!
 ## Credits
 
 - **Zola** - Static site generator
-- **Tailwind CSS** - CSS framework
+- **Tailwind CSS v4.1** - CSS framework
 - **Fuse.js** - Fuzzy search library
 - **Grokipedia** - Design inspiration
