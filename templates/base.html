@@ -13,39 +13,17 @@
     <script src="{{ get_url(path="js/mermaid.min.js") | safe }}"></script>
 
     <!-- KaTeX for math rendering -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ get_url(path="js/katex/katex.min.css") | safe }}">
+    <script src="{{ get_url(path="js/katex/katex.min.js") | safe }}"></script>
 
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'bg-primary': 'rgb(20, 20, 20)',
-                        'bg-secondary': 'rgb(28, 28, 28)',
-                        'bg-tertiary': 'rgb(36, 36, 36)',
-                    }
-                }
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="{{ get_url(path="css/tailwind.min.css") | safe }}">
 
     <!-- Custom SCSS (compiled to CSS) -->
     <link href="/style.css" rel="stylesheet">
 
     <!-- Fuse.js for search -->
-    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js" defer></script>
-    <script>
-      if (typeof window.Fuse === 'undefined') {
-        var s = document.createElement('script');
-        s.src = 'https://unpkg.com/fuse.js@6.6.2/dist/fuse.min.js';
-        s.defer = true;
-        document.head.appendChild(s);
-      }
-    </script>
+    <script src="{{ get_url(path="js/fuse.min.js") | safe }}" defer></script>
 
     {% block extra_head %}{% endblock extra_head %}
 </head>
@@ -491,17 +469,58 @@
         });
     </script>
     <script>
-        // KaTeX auto-render initialization
+        // KaTeX manual rendering for math blocks
         document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body, {
-                delimiters: [
-                    {left: '$$', right: '$$', display: true},
-                    {left: '$', right: '$', display: false},
-                    {left: '\\[', right: '\\]', display: true},
-                    {left: '\\(', right: '\\)', display: false}
-                ],
-                throwOnError: false
+            // Wait for KaTeX to be available
+            if (typeof katex === 'undefined') {
+                console.error('KaTeX is not loaded');
+                return;
+            }
+            
+            // Render display math blocks (created by math shortcode)
+            document.querySelectorAll('.math-block').forEach(function(element) {
+                try {
+                    katex.render(element.textContent, element, {
+                        displayMode: true,
+                        throwOnError: false
+                    });
+                } catch (e) {
+                    console.error('KaTeX render error:', e);
+                }
             });
+            
+            // Render inline math with $ delimiters
+            function renderInlineMath(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    const text = node.textContent;
+                    const regex = /\$([^\$]+)\$/g;
+                    if (regex.test(text)) {
+                        const span = document.createElement('span');
+                        let lastIndex = 0;
+                        text.replace(regex, function(match, tex, offset) {
+                            span.appendChild(document.createTextNode(text.slice(lastIndex, offset)));
+                            const mathSpan = document.createElement('span');
+                            try {
+                                katex.render(tex, mathSpan, {displayMode: false, throwOnError: false});
+                            } catch (e) {
+                                mathSpan.textContent = match;
+                            }
+                            span.appendChild(mathSpan);
+                            lastIndex = offset + match.length;
+                        });
+                        span.appendChild(document.createTextNode(text.slice(lastIndex)));
+                        node.parentNode.replaceChild(span, node);
+                    }
+                } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE') {
+                    Array.from(node.childNodes).forEach(renderInlineMath);
+                }
+            }
+            
+            // Process inline math in content
+            const content = document.querySelector('main');
+            if (content) {
+                renderInlineMath(content);
+            }
         });
     </script>
 
