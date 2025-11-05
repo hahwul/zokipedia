@@ -31,18 +31,7 @@
                         {% endif %}
                     </div>
 
-                    <!-- Language Switcher -->
-                    <div class="flex items-center">
-                        <label for="language-select" class="text-sm text-gray-400 mr-3">Language:</label>
-                        <select id="language-select" class="bg-transparent text-white rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="{{ page.permalink }}" selected>{{ lang | upper }}</option>
-                            {% for translation in page.translations %}
-                            {% if translation.lang != lang %}
-                            <option value="{{ translation.permalink }}">{{ translation.lang | upper }}</option>
-                            {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
+
                 </div>
                 {% endif %}
 
@@ -57,6 +46,32 @@
                 {% endif %}
 
                 <h1 class="text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">{{ page.title }}</h1>
+                <div class="flex items-center gap-4 mt-2">
+                    <label for="language-select" class="text-sm text-gray-400">Language:</label>
+                    <select id="language-select" class="bg-transparent text-white rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="{{ page.permalink }}" selected>{{ lang | upper }}</option>
+                        {% for translation in page.translations %}
+                        {% if translation.lang != lang %}
+                        <option value="{{ translation.permalink }}">{{ translation.lang | upper }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    {% if config.extra.edit_base_url %}
+                    {% if page.relative_path %}
+                    {% set edit_path = page.relative_path %}
+                    {% elif page.path %}
+                    {% set current_lang = page.lang | default(value=lang) | default(value="en") %}
+                    {% set lang_suffix = "" %}
+                    {% if current_lang != "en" %}
+                    {% set lang_suffix = "." ~ current_lang %}
+                    {% endif %}
+                    {% set edit_path = page.path ~ lang_suffix ~ ".md" %}
+                    {% else %}
+                    {% set edit_path = "" %}
+                    {% endif %}
+                    <a href="{{ config.extra.edit_base_url }}{{ edit_path }}" class="text-sm text-gray-400 hover:text-white underline-offset-2 hover:underline" target="_blank" rel="noopener noreferrer">Edit this page</a>
+                    {% endif %}
+                </div>
             </header>
 
             <!-- Page Content -->

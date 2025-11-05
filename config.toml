@@ -19,6 +19,7 @@ index_format = "fuse_javascript"
 
 [extra]
 # Put all your custom variables here
+edit_base_url = "https://github.com/hahwul/zokipedia/edit/main/content/"
 
 # Navigation links - will appear in the header on the right side
 nav_links = [
