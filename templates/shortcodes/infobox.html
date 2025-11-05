@@ -5,7 +5,7 @@
     
     {% if image %}
     <div class="infobox-image">
-        <img src="{{ image }}" alt="{{ image_alt | default(value=title) }}" />
+        <img src="{{ image }}" alt="{{ image_alt | default(value=title | default(value='Infobox image')) }}" />
         {% if image_caption %}
         <div class="infobox-caption">{{ image_caption }}</div>
         {% endif %}
