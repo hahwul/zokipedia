@@ -77,6 +77,34 @@ Your content here...
 
 ## Shortcodes
 
+### Infobox Shortcode
+
+The infobox shortcode creates an information box that displays on the right side of the page (similar to Wikipedia infoboxes), perfect for presenting structured supplementary information:
+
+```markdown
+{% infobox(title="Article Title", image="/path/to/image.png", image_caption="Image description") %}
+| Field | Value |
+|-------|-------|
+| **Type** | Example |
+| **Date** | 2025 |
+| **Author** | Name |
+
+Additional markdown content can be added here.
+{% end %}
+```
+
+**Parameters:**
+- `title` (optional): Title displayed at the top of the infobox
+- `image` (optional): Path to an image to display
+- `image_alt` (optional): Alt text for the image (defaults to title)
+- `image_caption` (optional): Caption text shown below the image
+
+**Features:**
+- Floats on the right side of content on desktop
+- Responsive design (full-width on mobile devices)
+- Supports tables, paragraphs, lists, links, and formatted text
+- Ideal for key-value pair data presentation
+
 ### Math Shortcode
 
 The math shortcode allows you to include mathematical expressions using LaTeX syntax:

@@ -442,6 +442,132 @@ a:focus-visible {
     }
 }
 
+// Infobox styles
+.infobox {
+    float: right;
+    clear: right;
+    width: 280px;
+    margin: 0 0 1.5rem 1.5rem;
+    background-color: $bg-secondary;
+    border: 1px solid $border-color;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    font-size: 0.875rem;
+    
+    .infobox-title {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #ffffff;
+        padding: 1rem;
+        background-color: $bg-tertiary;
+        border-bottom: 1px solid $border-color;
+        text-align: center;
+    }
+    
+    .infobox-image {
+        width: 100%;
+        
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0;
+            border-radius: 0;
+        }
+        
+        .infobox-caption {
+            padding: 0.5rem;
+            font-size: 0.75rem;
+            color: $text-muted;
+            text-align: center;
+            font-style: italic;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+    }
+    
+    .infobox-content {
+        padding: 1rem;
+        
+        table {
+            width: 100%;
+            margin: 0;
+            border: none;
+            
+            tr {
+                background: transparent !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+            
+            th, td {
+                padding: 0.5rem 0.25rem;
+                border: none;
+                font-size: 0.875rem;
+                vertical-align: top;
+            }
+            
+            th {
+                font-weight: 600;
+                color: $text-secondary;
+                text-align: left;
+                background: transparent;
+                width: 40%;
+            }
+            
+            td {
+                color: $text-primary;
+                text-align: left;
+            }
+        }
+        
+        p {
+            margin: 0.5rem 0;
+            
+            &:first-child {
+                margin-top: 0;
+            }
+            
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+        
+        ul, ol {
+            margin: 0.5rem 0;
+            padding-left: 1.25rem;
+        }
+        
+        li {
+            margin: 0.25rem 0;
+        }
+        
+        strong {
+            color: #ffffff;
+        }
+        
+        a {
+            color: $accent-blue;
+            text-decoration: underline;
+            
+            &:hover {
+                color: $accent-blue-hover;
+            }
+        }
+    }
+}
+
+// Mobile responsiveness for infobox
+@media (max-width: 768px) {
+    .infobox {
+        float: none;
+        width: 100%;
+        margin: 1.5rem 0;
+    }
+}
+
 // Print styles
 @media print {
     .fixed,
@@ -467,5 +593,12 @@ a:focus-visible {
         h6 {
             color: black;
         }
+    }
+    
+    .infobox {
+        float: none;
+        width: 100%;
+        border: 1px solid black;
+        page-break-inside: avoid;
     }
 }

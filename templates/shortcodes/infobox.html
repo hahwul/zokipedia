@@ -1,0 +1,18 @@
+<div class="infobox">
+    {% if title %}
+    <div class="infobox-title">{{ title }}</div>
+    {% endif %}
+    
+    {% if image %}
+    <div class="infobox-image">
+        <img src="{{ image }}" alt="{{ image_alt | default(value=title) }}" />
+        {% if image_caption %}
+        <div class="infobox-caption">{{ image_caption }}</div>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    <div class="infobox-content">
+        {{ body | markdown | safe }}
+    </div>
+</div>
