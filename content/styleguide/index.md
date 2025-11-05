@@ -1,7 +1,7 @@
 +++
 title = "Style Guide"
-date = 2025-11-01
-updated = 2025-11-01
+date = 2025-11-04
+updated = 2025-11-04
 description = ""
 tags = []
 +++

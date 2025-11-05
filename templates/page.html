@@ -47,7 +47,6 @@
 
                 <h1 class="text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">{{ page.title }}</h1>
                 <div class="flex items-center gap-4 mt-2">
-                    <label for="language-select" class="text-sm text-gray-400">Language:</label>
                     <select id="language-select" class="bg-transparent text-white rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="{{ page.permalink }}" selected>{{ lang | upper }}</option>
                         {% for translation in page.translations %}
