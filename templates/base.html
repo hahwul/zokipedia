@@ -45,39 +45,6 @@
         <div class="flex items-center justify-between h-full max-w-full px-4 mx-auto">
             <!-- Logo -->
             <div class="flex items-center">
-                {% if config.extra.parentlogo %}
-                <div class="flex items-center mr-2 parentlogo-container">
-                    {% if config.extra.parentlogo.link %}
-                    <a href="{{ config.extra.parentlogo.link }}"
-                       class="flex items-center p-1 rounded-lg hover:bg-secondary transition-colors"
-                       {% if config.extra.parentlogo.link is starting_with("http") %}target="_blank" rel="noopener noreferrer"{% endif %}
-                       title="{{ config.extra.parentlogo.alt | default(value='Parent Logo') }}">
-                        {% if config.extra.parentlogo.text %}
-                        <span class="text-xl font-bold text-white">{{ config.extra.parentlogo.text }}</span>
-                        {% else %}
-                        <img src="{{ config.extra.parentlogo.url }}"
-                             alt="{{ config.extra.parentlogo.alt | default(value='Parent Logo') }}"
-                             class="rounded-md"
-                             width="{{ config.extra.parentlogo.width | default(value=32) }}"
-                             height="{{ config.extra.parentlogo.height | default(value=32) }}"
-                             loading="lazy">
-                        {% endif %}
-                    </a>
-                    {% else %}
-                        {% if config.extra.parentlogo.text %}
-                        <span class="text-xl font-bold text-white">{{ config.extra.parentlogo.text }}</span>
-                        {% else %}
-                        <img src="{{ config.extra.parentlogo.url }}"
-                             alt="{{ config.extra.parentlogo.alt | default(value='Parent Logo') }}"
-                             class="rounded-md"
-                             width="{{ config.extra.parentlogo.width | default(value=32) }}"
-                             height="{{ config.extra.parentlogo.height | default(value=32) }}"
-                             loading="lazy">
-                        {% endif %}
-                    {% endif %}
-                </div>
-                <span class="text-xl font-bold text-gray-300 mr-2">{{ config.extra.parentlogo.separator | default(value='|') }}</span>
-                {% endif %}
                 <a href="/" class="text-xl font-bold text-white hover:text-blue-400 transition-colors">
                     Zokipedia
                 </a>
@@ -150,7 +117,31 @@
                     </button>
                 </div>
 
-
+                <!-- Sub Logo -->
+                {% if config.extra.sublogo %}
+                <div class="flex items-center ml-2">
+                    {% if config.extra.sublogo.link %}
+                    <a href="{{ config.extra.sublogo.link }}"
+                       class="flex items-center p-1 rounded-lg hover:bg-secondary transition-colors"
+                       {% if config.extra.sublogo.link is starting_with("http") %}target="_blank" rel="noopener noreferrer"{% endif %}
+                       title="{{ config.extra.sublogo.alt | default(value='Sub Logo') }}">
+                        <img src="{{ config.extra.sublogo.url }}"
+                             alt="{{ config.extra.sublogo.alt | default(value='Sub Logo') }}"
+                             class="rounded-md"
+                             width="{{ config.extra.sublogo.width | default(value=32) }}"
+                             height="{{ config.extra.sublogo.height | default(value=32) }}"
+                             loading="lazy">
+                    </a>
+                    {% else %}
+                    <img src="{{ config.extra.sublogo.url }}"
+                         alt="{{ config.extra.sublogo.alt | default(value='Sub Logo') }}"
+                         class="rounded-md"
+                         width="{{ config.extra.sublogo.width | default(value=32) }}"
+                         height="{{ config.extra.sublogo.height | default(value=32) }}"
+                         loading="lazy">
+                    {% endif %}
+                </div>
+                {% endif %}
             </div>
         </div>
 
@@ -485,7 +476,7 @@
                 console.error('KaTeX is not loaded');
                 return;
             }
-
+            
             // Render display math blocks (created by math shortcode)
             document.querySelectorAll('.math-block').forEach(function(element) {
                 try {
@@ -497,7 +488,7 @@
                     console.error('KaTeX render error:', e);
                 }
             });
-
+            
             // Render inline math with $ delimiters
             function renderInlineMath(node) {
                 if (node.nodeType === Node.TEXT_NODE) {
@@ -524,7 +515,7 @@
                     Array.from(node.childNodes).forEach(renderInlineMath);
                 }
             }
-
+            
             // Process inline math in content
             const content = document.querySelector('main');
             if (content) {
