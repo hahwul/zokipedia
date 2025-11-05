@@ -30,13 +30,15 @@ nav_links = [
 # Navigation configuration
 nav_height = 80  # Height of the top navigation in pixels (default: 64px)
 
-# Sub logo - will appear on the far right of the navigation
-[extra.sublogo]
-url = "https://www.hahwul.com/images/logo.png"
+# Parent logo - will appear on the left of the main logo
+[extra.parentlogo]
+text = "HAHWUL"  # Use text instead of image (optional)
+# url = "https://www.hahwul.com/images/logo.png"
 alt = "Hahwul Logo"
 link = "https://www.hahwul.com"
 width = 60
 height = 60
+separator = "|"  # Separator between parentlogo and main logo (default: "|")
 
 # Home hero image (shown above the search on the homepage)
 # Configure this block to display an image above the search on the home page.
