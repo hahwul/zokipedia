@@ -6,6 +6,19 @@ description = "Understanding time and space complexity in algorithms with mathem
 tags = ["algorithms", "complexity", "computer-science", "math"]
 +++
 
+{% infobox(title="Big O Notation") %}
+| Notation | Name | Example |
+|----------|------|---------|
+| **O(1)** | Constant | Array access |
+| **O(log n)** | Logarithmic | Binary search |
+| **O(n)** | Linear | Array iteration |
+| **O(n log n)** | Linearithmic | Merge sort |
+| **O(n²)** | Quadratic | Nested loops |
+| **O(2ⁿ)** | Exponential | Recursive fibonacci |
+
+**Common Rule**: Drop constants and lower-order terms.
+{% end %}
+
 Understanding algorithm complexity is crucial for writing efficient code. We use mathematical notation to express how algorithms scale.
 
 ## Big O Notation
