@@ -1,5 +1,5 @@
 +++
-title = "Installation and Configuration"
+title = "Get Started"
 date = 2025-11-05
 updated = 2025-11-05
 description = ""
