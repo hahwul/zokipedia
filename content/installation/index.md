@@ -60,41 +60,84 @@ This will ensure you always have the latest features and fixes from the zokipedi
 
 ## Set the theme in config.toml
 
-This is the final step. Set the theme in your `config.toml` file to use zokipedia. Below is a sample configuration with additional options you can customize:
+This is the final step. Set the theme in your `config.toml` file to use zokipedia. Below are the configuration options you can customize, grouped by category.
+
+### Basic Site Configuration
+
+These are the fundamental settings for your site, including the base URL, title, description, and theme selection.
 
 ```toml
 base_url = "https://your-site.com"
 title = "Your App"
 description = "Your app description"
 theme = "zokipedia"
+```
 
+### Build and Compilation Settings
+
+Configure how Zola builds your site, such as compiling Sass files and building a search index.
+
+```toml
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
 
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = true
+```
 
+### Markdown Configuration
+
+Settings related to Markdown processing, like syntax highlighting for code blocks.
+
+```toml
 [markdown]
 # Whether to do syntax highlighting
 highlight_code = true
+```
 
+### Search Configuration
+
+Configure the search functionality, including the index format.
+
+```toml
 [search]
 index_format = "fuse_javascript"
+```
 
+### Extra Configuration
+
+Additional theme-specific settings under the `[extra]` table.
+
+#### Navigation Links
+
+Navigation links appear in the header on the right side. Each link can have a name, URL, and optionally an icon (e.g., "github").
+
+```toml
 [extra]
-# Navigation links - will appear in the header on the right side
 nav_links = [
     { name = "Home", url = "/" },
     { name = "Docs", url = "/docs" },
+    { name = "GitHub", url = "https://github.com/your-repo", icon = "github" },
 ]
+```
 
-# Navigation configuration
+#### Navigation Height
+
+Set the height of the top navigation in pixels. The default is 64px.
+
+```toml
 nav_height = 80  # Height of the top navigation in pixels (default: 64px)
+```
 
-# Footer configuration
+#### Footer Configuration
+
+Configure the footer with text links and copyright text.
+
+```toml
 [extra.footer]
 links = [
-    { text = "Contact", url = "/contact" }
+    { text = "Contact", url = "/contact" },
+    { text = "Privacy Policy", url = "/privacy" }
 ]
 copyright = "© Your Name. All rights reserved."
 ```
