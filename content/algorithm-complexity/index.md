@@ -1,5 +1,5 @@
 +++
-title = "Algorithm Complexity"
+title = "[Example] Algorithm Complexity"
 date = 2025-11-01
 updated = 2025-11-06
 description = "A practical, math-backed guide to time/space complexity: definitions, classes, pitfalls, measurement, data structures, and key formulas."

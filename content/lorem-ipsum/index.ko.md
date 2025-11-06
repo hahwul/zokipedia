@@ -1,5 +1,5 @@
 +++
-title = "Lorem ipsum"
+title = "[Example] Lorem ipsum"
 date = 2025-11-01
 updated = 2025-11-06
 description = "Lorem ipsum 실전 가이드: 역사, 목적, 모범 사례, 접근성, 주의점, 대안, 예시까지."
