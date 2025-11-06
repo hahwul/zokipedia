@@ -1,5 +1,5 @@
 +++
-title = "Installation Guide"
+title = "Installation and Configuration"
 date = 2025-11-05
 updated = 2025-11-05
 description = ""
@@ -60,11 +60,43 @@ This will ensure you always have the latest features and fixes from the zokipedi
 
 ## Set the theme in config.toml
 
-This is the final step. Set the theme in your `config.toml` file to use zokipedia.
+This is the final step. Set the theme in your `config.toml` file to use zokipedia. Below is a sample configuration with additional options you can customize:
 
 ```toml
+base_url = "https://your-site.com"
 title = "Your App"
+description = "Your app description"
 theme = "zokipedia"
+
+# Whether to automatically compile all Sass files in the sass directory
+compile_sass = true
+
+# Whether to build a search index to be used later on by a JavaScript library
+build_search_index = true
+
+[markdown]
+# Whether to do syntax highlighting
+highlight_code = true
+
+[search]
+index_format = "fuse_javascript"
+
+[extra]
+# Navigation links - will appear in the header on the right side
+nav_links = [
+    { name = "Home", url = "/" },
+    { name = "Docs", url = "/docs" },
+]
+
+# Navigation configuration
+nav_height = 80  # Height of the top navigation in pixels (default: 64px)
+
+# Footer configuration
+[extra.footer]
+links = [
+    { text = "Contact", url = "/contact" }
+]
+copyright = "© Your Name. All rights reserved."
 ```
 
 Now, when you run Zola, it will use the zokipedia theme.
