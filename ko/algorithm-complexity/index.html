@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Example] 알고리즘 복잡도 - Zokipedia</title>
+    <meta name="description" content="시간&#x2F;공간 복잡도에 대한 실전 지침: 정의, 클래스, 함정, 측정, 자료구조, 핵심 공식.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48">
+
+    <!-- mermaid -->
+    <script src="https://zokipedia.hahwul.com/js/mermaid.min.js"></script>
+
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://zokipedia.hahwul.com/js/katex/katex.min.css">
+    <script src="https://zokipedia.hahwul.com/js/katex/katex.min.js"></script>
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="https://zokipedia.hahwul.com/css/tailwind.min.css">
+
+    <!-- Custom SCSS (compiled to CSS) -->
+    <link href="/style.css" rel="stylesheet">
+
+    <!-- Fuse.js for search -->
+    <script src="https://zokipedia.hahwul.com/js/fuse.min.js" defer></script>
+
+    
+</head>
+<body class="bg-primary text-gray-100 min-h-screen">
+    
+    
+    
+    
+    
+    
+    <header class="fixed top-0 z-50 w-full bg-primary"
+            style="height: 80px;">
+        <div class="flex items-center justify-between h-full max-w-full px-4 mx-auto">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a href="/" class="text-xl font-bold text-white hover:text-blue-400 transition-colors">
+                    Zokipedia
+                </a>
+            </div>
+
+            <!-- Right side: Navigation Links + Search + Sub Logo -->
+            <div class="flex items-center gap-4">
+                <!-- Navigation Links from config -->
+                
+                <nav class="hidden md:flex items-center gap-3">
+
+                    
+                    <a href="&#x2F;all-posts"
+                       class="flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-secondary"
+                       >
+                        
+                        <span class="hidden lg:inline">All posts</span>
+                    </a>
+                    
+                    <a href="https:&#x2F;&#x2F;github.com&#x2F;hahwul&#x2F;zokipedia"
+                       class="flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-secondary"
+                       target="_blank" rel="noopener noreferrer">
+                        
+                        <span class="nav-icon" data-icon="github">
+                            
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            
+                        </span>
+                        
+                        <span class="hidden lg:inline">GitHub</span>
+                    </a>
+                    
+                </nav>
+
+                <!-- Mobile Navigation Menu -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-toggle" class="p-2 text-gray-300 hover:text-white transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+                
+
+                <!-- Search -->
+                <div class="relative">
+                    <button class="px-4 py-2 text-sm hover:border border-gray-700 rounded-full text-left text-gray-400 hover:bg-tertiary transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center gap-3 min-w-48" onclick="openSearch()">
+                        <span class="hidden sm:inline">Search...</span>
+                        <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <div class="hidden sm:flex items-center gap-1 text-xs px-2 py-0.5 rounded ml-auto">
+                            <span>⌘</span><span>K</span>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Sub Logo -->
+                
+                <div class="flex items-center ml-2">
+                    
+                    <a href="https:&#x2F;&#x2F;www.hahwul.com"
+                       class="flex items-center p-1 rounded-lg hover:bg-secondary transition-colors"
+                       target="_blank" rel="noopener noreferrer"
+                       title="Hahwul Logo">
+                        <img src="https:&#x2F;&#x2F;www.hahwul.com&#x2F;images&#x2F;logo.png"
+                             alt="Hahwul Logo"
+                             class="rounded-md"
+                             width="60"
+                             height="60"
+                             loading="lazy">
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        
+        <div id="mobile-menu" class="hidden md:hidden bg-primary border-t border-gray-800">
+            <nav class="px-4 py-3 space-y-1">
+                
+                <a href="&#x2F;all-posts"
+                   class="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-secondary"
+                   >
+                    
+                    All posts
+                </a>
+                
+                <a href="https:&#x2F;&#x2F;github.com&#x2F;hahwul&#x2F;zokipedia"
+                   class="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-secondary"
+                   target="_blank" rel="noopener noreferrer">
+                    
+                    <span class="nav-icon" data-icon="github">
+                        <!-- Same icon SVGs as above -->
+                        
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        
+                    </span>
+                    
+                    GitHub
+                </a>
+                
+            </nav>
+        </div>
+        
+    </header>
+    
+    
+
+    <main style="padding-top: 80px;">
+        
+<div class="flex">
+    <!-- Table of Contents - Left Sidebar -->
+    <nav class="toc-sidebar hidden lg:block w-72 fixed left-0 overflow-y-auto p-8 bg-secondary/20 backdrop-blur-sm">
+        <div class="space-y-3">
+            <h3 class="text-sm font-bold text-gray-300 uppercase tracking-wider mb-4">Table of Contents</h3>
+            <div id="toc" class="space-y-1">
+                <!-- TOC will be generated by JavaScript -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="flex-1 lg:ml-72">
+        <article class="max-w-7xl mx-auto px-8 py-12">
+            <!-- Page Header -->
+            <header class="mb-12">
+                
+                <div class="flex items-center justify-between text-sm text-gray-400 mb-6">
+                    <div>
+                        
+                        <span class="text-gray-300">Updated November 06, 2025</span>
+                        
+                    </div>
+
+
+                </div>
+                
+
+                
+
+                <h1 class="text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">[Example] 알고리즘 복잡도</h1>
+                <div class="flex items-center gap-4 mt-2">
+                    <select id="language-select" class="bg-transparent text-white rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="https:&#x2F;&#x2F;zokipedia.hahwul.com&#x2F;ko&#x2F;algorithm-complexity&#x2F;" selected>KO</option>
+                        
+                        
+                        
+                        
+                        <option value="https:&#x2F;&#x2F;zokipedia.hahwul.com&#x2F;algorithm-complexity&#x2F;">EN</option>
+                        
+                        
+                    </select>
+                    
+                    
+                    
+                    
+                    <a href="https:&#x2F;&#x2F;github.com&#x2F;hahwul&#x2F;zokipedia&#x2F;edit&#x2F;main&#x2F;content&#x2F;algorithm-complexity&#x2F;index.ko.md" class="text-sm text-gray-400 hover:text-white underline-offset-2 hover:underline" target="_blank" rel="noopener noreferrer">Edit this page</a>
+                    
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div id="page-content" class="prose prose-xl prose-invert max-w-none leading-relaxed">
+                <p>효율적이고 확장 가능한 소프트웨어를 만들려면 알고리즘 복잡도를 이해하는 것이 필수입니다. 이 글은 엄밀한 정의와 함께 실무 팁, 흔한 함정, 일상적으로 활용할 수 있는 참조 공식을 한데 모았습니다.</p>
+<h2 id="mueoseul-ceugjeonghanayo">무엇을 측정하나요?</h2>
+<ul>
+<li>시간 복잡도: 선택한 계산 모델(보통 워드 크기 w = Θ(log n)인 단위 비용 RAM 모델)에서 입력 크기 <code>n</code>에 따라 실행 시간이 어떻게 증가하는가</li>
+<li>공간 복잡도: <code>n</code>에 따른 메모리 사용량(피크 또는 추가 공간)</li>
+<li>입력 크기: 항목 수 <code>n</code>, 수치의 비트 길이, 그래프의 정점/간선 수 <code>(V, E)</code> 등. 어떤 입력 모델을 쓰는지 항상 명시하세요.</li>
+</ul>
+<p>현실적인 주의사항: 같은 점근 복잡도라도 상수, 메모리 지역성, 병렬성, 하드웨어 효과에 따라 실제 실행 시간은 크게 달라질 수 있습니다.</p>
+<h2 id="jeomgeun-pyogibeob-jeongyi">점근 표기법(정의)</h2>
+<p><code>f(n)</code>, <code>g(n)</code>이 충분히 큰 <code>n</code>에 대해 음이 아닌 함수라고 하겠습니다.</p>
+<ul>
+<li>
+<p>Big-O(상한):
+<span class="math-block">f(n) = O(g(n)) \iff \exists c&gt;0,\, n_0\ge 1:\ \forall n\ge n_0,\ 0 \le f(n) \le c\,g(n)</span>
+</p>
+</li>
+<li>
+<p>Big-Ω(하한):
+<span class="math-block">f(n) = \Omega(g(n)) \iff \exists c&gt;0,\, n_0:\ \forall n\ge n_0,\ f(n) \ge c\,g(n)</span>
+</p>
+</li>
+<li>
+<p>Big-Θ(타이트한 경계):
+<span class="math-block">f(n) = \Theta(g(n)) \iff f(n)=O(g(n))\ \text{and}\ f(n)=\Omega(g(n))</span>
+</p>
+</li>
+<li>
+<p>little-o(엄격히 더 작음):
+<span class="math-block">f(n) = o(g(n)) \iff \lim_{n\to\infty} \frac{f(n)}{g(n)} = 0</span>
+</p>
+</li>
+<li>
+<p>little-ω(엄격히 더 큼):
+<span class="math-block">f(n) = \omega(g(n)) \iff \lim_{n\to\infty} \frac{f(n)}{g(n)} = \infty</span>
+</p>
+</li>
+</ul>
+<p>최악/평균/분할 상환(암ORTized) 경계는 모두 위 표기법으로 표현합니다. 어떤 경우인지 반드시 명시하세요.</p>
+<h2 id="jaju-sseuneun-bogjabdo-deunggeub-yesi-poham">자주 쓰는 복잡도 등급(예시 포함)</h2>
+<ul>
+<li>상수: <code>O(1)</code> — 배열 인덱싱, 스택 push/pop(동적 배열은 분할 상환)</li>
+<li>역 아커만: <code>O(α(n))</code> — 사실상 상수; 경로 압축 + 랭크 합치기의 유니온-파인드</li>
+<li>로그: <code>O(log n)</code> — 이진 탐색, 균형 BST의 높이, 2로 나누는 루프</li>
+<li>다중 로그: <code>O((\log n)^k)</code> — 다단 인덱스 구조 등</li>
+<li>부분 선형: <code>O(√n)</code> — 소인수 시험 상한, 2D 그리드 반경 탐색</li>
+<li>선형: <code>O(n)</code> — 단일 패스, 카운팅; 인접 리스트의 BFS는 <code>O(V+E)</code></li>
+<li>선형로그: <code>O(n \log n)</code> — 병합 정렬, 힙 정렬, 평균적 퀵정렬</li>
+<li>다항(제곱/세제곱 등): <code>O(n^2)</code>, <code>O(n^3)</code>, <code>O(n^k)</code> — 독립 차원의 중첩 루프; 고전적 행렬 곱셈 <code>O(n^3)</code></li>
+<li>거의 선형(키 범위 제한): <code>O(n + k)</code> — 작은 정수 범위의 카운팅/기수 정렬; <code>k</code>는 키 범위</li>
+<li>준다항: <code>O(2^{(\log n)^c})</code> — 일부 근사/무작위성 제거 결과</li>
+<li>지수: <code>O(c^n)</code> — 부분집합 전수조사, Held–Karp로 정확 TSP <code>O(n^2 2^n)</code></li>
+<li>팩토리얼: <code>O(n!)</code> — 순열 열거</li>
+</ul>
+<p>참고: 빠른 곱셈 <code>O(n^{\log_2 3})</code>(Karatsuba), 빠른 행렬 곱 <code>O(n^\omega)</code>(<code>ω &lt; 2.373</code>, 이론적).</p>
+<h2 id="coeag-pyeonggyun-bunhal-sanghwan">최악/평균/분할 상환</h2>
+<ul>
+<li>최악: 크기 <code>n</code>인 입력 중 가장 느린 경우의 경계</li>
+<li>평균: 입력 분포에 대한 기대 복잡도(분포를 명시해야 함)</li>
+<li>분할 상환: 가끔 비싼 연산이 있어도 일련의 연산 평균 비용
+<ul>
+<li>예: 동적 배열 두 배 확장. <code>n</code>번 append의 총 이동은 <code>&lt; 2n</code>, 따라서 append의 분할 상환 비용은 <code>O(1)</code>.</li>
+</ul>
+</li>
+</ul>
+<span class="math-block">\text{Amortized cost} = \frac{\text{Total cost over } n \text{ ops}}{n}</span>
+<h2 id="silceuggwa-cujeong">실측과 추정</h2>
+<p>복잡도를 실험적으로 검증하는 방법:</p>
+<ul>
+<li>워크로드 분리
+<ul>
+<li>I/O와 로깅 제외, 순수 계산만 측정</li>
+<li>워밍업(JIT, 캐시) 후 여러 번 반복 측정</li>
+</ul>
+</li>
+<li>문제 크기 <code>n</code> 변화
+<ul>
+<li>로그 스텝(예: n = 2^k)으로 증가, 충분한 데이터 포인트 확보</li>
+<li><code>n \log n</code> 후보는 <code>T(n)/n</code>과 <code>\log n</code>을 비교(평평하면 <code>n \log n</code> 가능성)</li>
+</ul>
+</li>
+<li>로그–로그 플롯
+<ul>
+<li><code>(x, y) = (\log n, \log T(n))</code>에 직선을 피팅. 기울기 ≈ 다항 차수.
+<span class="math-block">s \approx \frac{\log T(n_2) - \log T(n_1)}{\log n_2 - \log n_1}</span>
+</li>
+</ul>
+</li>
+<li>통계 처리
+<ul>
+<li>중앙값 또는 절사 평균 사용, 분산 보고</li>
+<li>이상치 제거, CPU 고정, 스로틀링 회피</li>
+</ul>
+</li>
+<li>공간 프로파일링
+<ul>
+<li>피크 사용량, 할당 횟수, 원소당 오버헤드 추적</li>
+<li>GC/할당기 메타데이터, 단편화 고려</li>
+</ul>
+</li>
+</ul>
+<p>주의: 데드 코드 제거, 분기 예측, 프리패치, 캐싱 등으로 마이크로벤치마크가 왜곡될 수 있습니다. 가능하면 프로파일러와 카운터로 검증하세요.</p>
+<h2 id="jaryogujo-yoyag-ilbu-yeonsan">자료구조 요약(일부 연산)</h2>
+<ul>
+<li>정적 배열
+<ul>
+<li>인덱스: <code>O(1)</code></li>
+<li>탐색: 선형 <code>O(n)</code>, 정렬+이진 탐색이면 <code>O(log n)</code></li>
+<li>중간 삽입/삭제: 시프트로 <code>O(n)</code></li>
+</ul>
+</li>
+<li>동적 배열(분할 상환 두 배 확장)
+<ul>
+<li>뒤에 추가: 분할 상환 <code>O(1)</code>, 리사이즈 순간 최악 <code>O(n)</code></li>
+<li>중간 삽입/삭제: <code>O(n)</code></li>
+</ul>
+</li>
+<li>단/양방향 연결 리스트
+<ul>
+<li>앞에 삽입: <code>O(1)</code>, 꼬리 포인터 있으면 뒤에 삽입: <code>O(1)</code>, 탐색: <code>O(n)</code>, 임의 인덱스: <code>O(n)</code></li>
+</ul>
+</li>
+<li>스택/큐/데크
+<ul>
+<li>Push/Pop/Enqueue/Dequeue: 구현에 따라 분할 상환 또는 최악 <code>O(1)</code></li>
+</ul>
+</li>
+<li>해시 테이블(체이닝/오픈 어드레싱)
+<ul>
+<li>평균: 탐색/삽입/삭제 <code>O(1)</code>(건전한 로드 팩터)</li>
+<li>최악: <code>O(n)</code>(적대적 충돌)</li>
+<li>리사이즈: 가끔 <code>O(n)</code>; 연산당 분할 상환 상수</li>
+</ul>
+</li>
+<li>정렬 맵/셋(균형 BST: Red–Black, AVL, B-트리)
+<ul>
+<li>탐색/삽입/삭제: <code>O(log n)</code>; 전/후임자: <code>O(log n)</code>; 순회: <code>O(n)</code></li>
+</ul>
+</li>
+<li>힙(이진 힙)
+<ul>
+<li>최소값: <code>O(1)</code>; 삽입: <code>O(log n)</code>; 추출: <code>O(log n)</code>; 힙 빌드: <code>O(n)</code></li>
+<li>decrease-key: <code>O(log n)</code>(피보나치 힙은 분할 상환 <code>O(1)</code>이나 상수 큼)</li>
+</ul>
+</li>
+<li>서로소 집합(유니온–파인드)
+<ul>
+<li>경로 압축 + 랭크/사이즈 합치기: 연산당 분할 상환 <code>O(α(n))</code></li>
+</ul>
+</li>
+<li>트라이/접두 트리(알파벳 크기 <code>σ</code>)
+<ul>
+<li>삽입/조회: 키 길이 <code>L</code>에 대해 <code>O(L)</code>; 메모리는 커질 수 있음(분기 <code>σ</code>)</li>
+</ul>
+</li>
+<li>블룸 필터
+<ul>
+<li>멤버십 테스트(삭제 없음): 시간 <code>O(k)</code>, 공간 <code>O(m)</code>, 거짓 양성 허용
+<span class="math-block">p \approx \left(1 - e^{-kn&#x2F;m}\right)^k,\quad k_{\text{opt}} = \frac{m}{n}\ln 2,\quad p_{\min} \approx (0.6185)^{m&#x2F;n}</span>
+</li>
+</ul>
+</li>
+</ul>
+<p>그래프 표현:</p>
+<ul>
+<li>인접 리스트: 공간 <code>O(V+E)</code>; BFS/DFS <code>O(V+E)</code></li>
+<li>인접 행렬: 공간 <code>O(V^2)</code>; 간선 존재 확인 <code>O(1)</code></li>
+</ul>
+<p>대표 그래프 알고리즘 비용:</p>
+<ul>
+<li>BFS/DFS: <code>O(V+E)</code></li>
+<li>다익스트라(음수 가중치 없음): 이진 힙 <code>O((V+E)\log V)</code>, 피보나치 힙 <code>O(E + V \log V)</code></li>
+<li>0–1 BFS: 데크로 <code>O(V+E)</code></li>
+<li>MST: 크루스칼 <code>O(E \log V)</code>, 프림(이진 힙) <code>O(E \log V)</code></li>
+</ul>
+<p>정렬과 선택:</p>
+<ul>
+<li>비교 기반 정렬 하한: <code>Ω(n \log n)</code></li>
+<li>병합/힙 정렬: <code>O(n \log n)</code>; 퀵정렬: 평균 <code>O(n \log n)</code>, 최악 <code>O(n^2)</code></li>
+<li>카운팅/기수 정렬: 키 범위 <code>k</code>에 대해 <code>O(n + k)</code></li>
+<li>Quickselect(k번째 순서 통계): 평균 <code>O(n)</code>, 최악 <code>O(n^2)</code>; median-of-medians로 최악 <code>O(n)</code></li>
+</ul>
+<h2 id="jeomhwasiggwa-haegsim-gongsig">점화식과 핵심 공식</h2>
+<p>합과 근사:</p>
+<ul>
+<li>
+<p>1부터 n까지의 합:
+<span class="math-block">\sum_{i=1}^{n} i = \frac{n(n+1)}{2}</span>
+</p>
+</li>
+<li>
+<p>기하급수열:
+<span class="math-block">\sum_{i=0}^{n} r^i = \frac{r^{n+1} - 1}{r - 1}\quad (r \ne 1)</span>
+</p>
+</li>
+<li>
+<p>조화수:
+<span class="math-block">H_n = \sum_{i=1}^{n} \frac{1}{i} = \ln n + \gamma + \Theta\!\left(\frac{1}{n}\right)</span>
+
+여기서 <code>γ</code>는 오일러–마스케로니 상수입니다.</p>
+</li>
+<li>
+<p>로그 팩토리얼 / 스털링 근사:
+<span class="math-block">\log n! = \Theta(n \log n),\quad
+  n! \sim \sqrt{2\pi n}\left(\frac{n}{e}\right)^{n}</span>
+</p>
+</li>
+</ul>
+<p>점화식 예:</p>
+<ul>
+<li>
+<p>이진 탐색:
+<span class="math-block">T(n) = T(n&#x2F;2) + \Theta(1) \ \Rightarrow\ T(n)=\Theta(\log n)</span>
+</p>
+</li>
+<li>
+<p>병합 정렬:
+<span class="math-block">T(n) = 2T(n&#x2F;2) + \Theta(n) \ \Rightarrow\ T(n)=\Theta(n \log n)</span>
+</p>
+</li>
+<li>
+<p>Karatsuba 곱셈:
+<span class="math-block">T(n) = 3T(n&#x2F;2) + O(n) \ \Rightarrow\ T(n)=O\!\left(n^{\log_2 3}\right)\approx O(n^{1.585})</span>
+</p>
+</li>
+<li>
+<p>Strassen 행렬 곱:
+<span class="math-block">T(n) = 7T(n&#x2F;2) + O(n^2) \ \Rightarrow\ T(n)=O\!\left(n^{\log_2 7}\right)\approx O(n^{2.807})</span>
+</p>
+</li>
+</ul>
+<p>마스터 정리(분할 정복):
+<span class="math-block">T(n) = a\,T(n&#x2F;b) + f(n),\ a\ge 1,\ b&gt;1 \\
+T(n) =
+\begin{cases}
+\Theta\!\left(n^{\log_b a}\right) &amp; \text{if } f(n)=O\!\left(n^{\log_b a - \epsilon}\right) \\
+\Theta\!\left(n^{\log_b a}\log n\right) &amp; \text{if } f(n)=\Theta\!\left(n^{\log_b a}\right) \\
+\Theta\!\left(f(n)\right) &amp; \text{if } f(n)=\Omega\!\left(n^{\log_b a + \epsilon}\right)\ \text{and regularity holds}
+\end{cases}</span>
+</p>
+<p>Akra–Bazzi(일반형 직관):
+다음 꼴 <span class="math-block">T(x) = \sum_{i=1}^{k} a_i\,T(b_i x) + g(x)</span>
+에서 <code>p</code>를 찾아 <span class="math-block">\sum a_i b_i^p = 1</span>
+을 만족하게 합니다. 그러면
+<span class="math-block">T(x) = \Theta\!\left(x^p\left(1 + \int_{1}^{x} \frac{g(u)}{u^{p+1}}\,du\right)\right)</span>
+</p>
+<h2 id="byeongryeolseong-jageobryanggwa-gyeongro-gili">병렬성: 작업량과 경로 길이</h2>
+<p><code>T1</code>을 총 작업량(1코어), <code>T∞</code>를 span/임계 경로(무한 코어)라고 할 때, 프로세서 <code>P</code>개에서는:</p>
+<ul>
+<li>하한:
+<span class="math-block">T_P \ge \max\!\left(\frac{T_1}{P},\ T_{\infty}\right)</span>
+</li>
+<li>암달의 법칙(고정 작업량, 병렬 가능 비율 <code>P_f</code>):
+<span class="math-block">S(N) = \frac{1}{(1-P_f) + \frac{P_f}{N}}</span>
+</li>
+<li>거스타프손의 법칙(스케일된 작업량):
+<span class="math-block">S(N) = N - (1-P_f)(N-1)</span>
+</li>
+</ul>
+<p>시사점: 고도로 병렬적인 하드웨어에서는 작업량을 줄이는 것 못지않게 의존성(경로 길이, span)을 줄이는 설계가 중요합니다.</p>
+<h2 id="memori-gyeceunggwa-i-o-inji">메모리 계층과 I/O 인지</h2>
+<ul>
+<li>같은 <code>O(n)</code>이라도 지역성, 블록 전송 수에 따라 실제 시간은 수배 차이가 날 수 있습니다.</li>
+<li>캐시 인지/캐시 무감 알고리즘은 L1/L2/LLC/DRAM/디스크 사이 전송을 줄이도록 설계합니다.</li>
+<li>외부 메모리(I/O) 모델에서는 블록 크기 <code>B</code>, 메모리 크기 <code>M</code>을 두고 캐시 미스와 스캔 수를 최소화하는 게 목표입니다.</li>
+</ul>
+<h2 id="heunhan-hamjeong">흔한 함정</h2>
+<ul>
+<li>상수·메모리 무시: 무작위 접근의 <code>O(n)</code>이 연속 접근의 <code>O(n \log n)</code>보다 느릴 수 있음</li>
+<li>기준 불일치 비교: A의 평균과 B의 최악을 비교</li>
+<li>분포 가정 실수: 해시는 해시 함수/로드 팩터 관리가 중요, 적대 입력에선 <code>O(n)</code>으로 붕괴</li>
+<li>분할 상환과 최악의 혼동: 동적 배열 append는 연산 하나하나가 보장 <code>O(1)</code>이 아님</li>
+<li>작은 <code>n</code>의 현실: 저차항이 지배, 작은 입력엔 단순 알고리즘이 유리</li>
+<li>벤치마크 과최적화: JIT, 분기 예측, 데드 코드 제거, 워밍업의 영향을 간과</li>
+<li>I/O/네트워크 무시: 많은 시스템이 CPU가 아니라 I/O 또는 지연(latency)에 묶임</li>
+</ul>
+<h2 id="silmu-cekeuriseuteu">실무 체크리스트</h2>
+<ol>
+<li>입력 모델과 크기 매개변수를 정의하세요(<code>n</code>, <code>V</code>, <code>E</code>, 키 범위 <code>k</code>, 문자열 길이 <code>L</code> 등).</li>
+<li>의미 있는 복잡도 목표(최악/평균/분할 상환)를 선택하고 근거를 제시하세요.</li>
+<li>시간·공간·단순성의 자료구조 트레이드오프를 고려하세요.</li>
+<li>수학(점화식, 경계)과 측정(여러 <code>n</code>, 로그–로그 피팅)으로 모두 검증하세요.</li>
+<li>메모리 거동(피크, 지역성, 할당)과 병렬 확장성(span)을 점검하세요.</li>
+<li>회귀를 막을 수치/모니터링(예산, CI 성능 테스트)을 추가하세요.</li>
+</ol>
+<h2 id="suhag-burog-camgo">수학 부록(참고)</h2>
+<ul>
+<li>
+<p>로그의 합:
+<span class="math-block">\sum_{i=1}^{n} \log i = \log n! = \Theta(n \log n)</span>
+</p>
+</li>
+<li>
+<p>제곱/세제곱의 합:
+<span class="math-block">\sum_{i=1}^{n} i^2 = \frac{n(n+1)(2n+1)}{6},\quad
+  \sum_{i=1}^{n} i^3 = \left(\frac{n(n+1)}{2}\right)^2</span>
+</p>
+</li>
+<li>
+<p><code>n^a</code>와 <code>n \log n</code> 비교:</p>
+<ul>
+<li><code>a &gt; 1</code>이면 <code>n^a = ω(n \log n)</code>.</li>
+<li><code>a = 1</code>이면 <code>n \log n = ω(n)</code>.</li>
+</ul>
+</li>
+</ul>
+<p>정확한 표기, 현실적인 측정, 자료구조 트레이드오프 감각을 갖추면 알고리즘을 자신 있게 분석·비교·개선할 수 있습니다.</p>
+
+            </div>
+
+            <!-- Navigation -->
+            
+        </article>
+    </div>
+</div>
+
+<!-- Mobile TOC Toggle -->
+<button id="mobile-toc-toggle" class="lg:hidden fixed bottom-8 right-8 bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 rounded-full shadow-2xl hover:shadow-blue-500/30 hover:scale-110 transition-all duration-300 z-50">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+</button>
+
+<!-- Mobile TOC Overlay -->
+<div id="mobile-toc" class="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden">
+    <div class="fixed right-0 top-0 h-full w-80 bg-secondary/95 backdrop-blur-md border-l border-gray-700/50 p-8 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h3 class="text-lg font-bold text-gray-300 uppercase tracking-wider">Table of Contents</h3>
+            <button id="close-mobile-toc" class="text-gray-400 hover:text-white p-2 rounded-full hover:bg-gray-700/50 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div id="mobile-toc-content" class="space-y-1">
+            <!-- TOC content will be duplicated here -->
+        </div>
+    </div>
+</div>
+
+<script>
+    // Language Switcher
+    const languageSelect = document.getElementById('language-select');
+    if (languageSelect) {
+        languageSelect.addEventListener('change', function() {
+            window.location.href = this.value;
+        });
+    }
+
+    // Generate Table of Contents
+    function generateTOC() {
+        const content = document.getElementById('page-content');
+        const toc = document.getElementById('toc');
+        const mobileTocContent = document.getElementById('mobile-toc-content');
+
+        if (!content || !toc) {
+            return;
+        }
+
+        const headings = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+        if (headings.length === 0) {
+            return;
+        }
+
+        let tocHTML = '';
+
+        headings.forEach((heading, index) => {
+            // Create ID if not exists
+            if (!heading.id) {
+                heading.id = heading.textContent.toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/(^-|-$)/g, '');
+            }
+
+            const level = parseInt(heading.tagName.charAt(1));
+            const indent = (level - 1) * 12;
+
+            tocHTML += `
+                <a href="#${heading.id}"
+                   class="toc-link relative block rounded-lg hover:text-white transition-all duration-200"
+                   style="margin-left: ${indent}px; padding-left: calc(${indent}px + 12px)"
+                   data-heading="${heading.id}">
+                    ${heading.textContent}
+                </a>
+            `;
+        });
+
+        toc.innerHTML = tocHTML;
+        if (mobileTocContent) {
+            mobileTocContent.innerHTML = tocHTML;
+        }
+
+        // Add click handlers for TOC links
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+
+                    // Close mobile TOC if open
+                    const mobileTocModal = document.getElementById('mobile-toc');
+                    if (mobileTocModal) {
+                        mobileTocModal.classList.add('hidden');
+                    }
+
+                    // Update highlight after scroll
+                    setTimeout(() => {
+                        highlightCurrentSection();
+                    }, 500);
+                }
+            });
+        });
+    }
+
+    // Highlight current section in TOC
+    function highlightCurrentSection() {
+        const headings = document.querySelectorAll('#page-content h1, #page-content h2, #page-content h3, #page-content h4, #page-content h5, #page-content h6');
+        const tocLinks = document.querySelectorAll('.toc-link');
+
+        if (headings.length === 0 || tocLinks.length === 0) {
+            return;
+        }
+
+        let currentHeading = null;
+        let closestDistance = Infinity;
+
+        // Find the heading closest to the top of the viewport
+        headings.forEach(heading => {
+            const rect = heading.getBoundingClientRect();
+            const distance = Math.abs(rect.top - 120); // Account for header height
+
+            if (rect.top <= 160 && distance < closestDistance) {
+                closestDistance = distance;
+                currentHeading = heading.id;
+            }
+        });
+
+        // If no heading is above the fold, highlight the first one when we're at the top
+        if (!currentHeading && headings.length > 0) {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop < 200) {
+                currentHeading = headings[0].id;
+            }
+        }
+
+        // Update TOC links
+        tocLinks.forEach(link => {
+            const headingId = link.getAttribute('data-heading');
+            if (headingId === currentHeading) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+
+    // Mobile TOC functionality
+    const mobileTocToggle = document.getElementById('mobile-toc-toggle');
+    const mobileToc = document.getElementById('mobile-toc');
+    const closeMobileToc = document.getElementById('close-mobile-toc');
+
+    if (mobileTocToggle) {
+        mobileTocToggle.addEventListener('click', () => {
+            mobileToc.classList.remove('hidden');
+        });
+    }
+
+    if (closeMobileToc) {
+        closeMobileToc.addEventListener('click', () => {
+            mobileToc.classList.add('hidden');
+        });
+    }
+
+    // Close mobile TOC when clicking overlay
+    if (mobileToc) {
+        mobileToc.addEventListener('click', (e) => {
+            if (e.target === mobileToc) {
+                mobileToc.classList.add('hidden');
+            }
+        });
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        generateTOC();
+
+        // Initial highlight
+        setTimeout(() => {
+            highlightCurrentSection();
+        }, 100);
+
+        // Update TOC highlight on scroll with throttling
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
+            }
+            scrollTimeout = setTimeout(highlightCurrentSection, 50);
+        });
+
+        // Update on resize
+        window.addEventListener('resize', highlightCurrentSection);
+    });
+</script>
+
+    </main>
+
+    <!-- Search Modal -->
+    <div id="search-modal" class="fixed inset-0 bg-transparent bg-opacity-70 backdrop-blur-sm z-50 hidden">
+        <div class="flex items-start justify-center min-h-screen pt-16 px-4">
+            <div id="search-modal-panel" class="bg-primary border border-gray-700 rounded-lg w-full max-w-2xl shadow-xl">
+                <div class="p-4 border-b border-gray-700">
+                    <div class="relative">
+                        <input
+                            type="text"
+                            id="modal-search-input"
+                            placeholder="Search for anything..."
+                            class="w-full px-4 py-3 text-lg bg-black from-secondary/90 via-secondary/80 to-tertiary/70 backdrop-blur-md border border-gray-500/50 rounded-lg text-gray-100 hover:from-secondary hover:to-tertiary hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 ease-out focus:outline-none focus:ring-4 focus:ring-blue-500/60 placeholder-gray-400"
+                            autofocus
+                        >
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-4">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div id="modal-search-results" class="max-h-96 overflow-y-auto">
+                    <div class="p-4 text-gray-400 text-center">
+                        Start typing to search...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search functionality -->
+    
+    
+    
+    <script defer src="https://zokipedia.hahwul.com/search_index.ko.js"></script>
+    <script defer src="https://zokipedia.hahwul.com/search_index.js"></script>
+    <script>
+        // Search functionality (Fuse.js)
+        let fuse;
+        let searchIndex = [];
+
+        async function loadSearchIndex() {
+            // Use preloaded window.searchIndex if available
+            if (Array.isArray(window.searchIndex) && window.searchIndex.length) {
+                return normalizeIndex(window.searchIndex);
+            }
+            const candidates = [
+                "https://zokipedia.hahwul.com/search_index.ko.json",
+                "https://zokipedia.hahwul.com/search_index.ko.js",
+                "https://zokipedia.hahwul.com/search_index.json",
+                "https://zokipedia.hahwul.com/search_index.js"
+            ];
+
+            for (const url of candidates) {
+                try {
+                    const res = await fetch(url, { cache: 'no-store' });
+                    if (!res.ok) continue;
+
+                    if (url.endsWith('.json')) {
+                        const data = await res.json();
+                        return normalizeIndex(data);
+                    } else {
+                        const text = await res.text();
+                        // window.searchIndex = [...]
+                        let m = text.match(/window\.searchIndex\s*=\s*(\[.*?\]);/s);
+                        if (m) return normalizeIndex(JSON.parse(m[1]));
+                        // var/let/const searchIndex = [...]
+                        m = text.match(/(?:var|let|const)\s+searchIndex\s*=\s*(\[.*?\]);/s);
+                        if (m) return normalizeIndex(JSON.parse(m[1]));
+                        // searchIndex = JSON.parse('...')
+                        m = text.match(/searchIndex\s*=\s*JSON\.parse\(\s*(['"])([\s\S]*?)\1\s*\)/s);
+                        if (m) return normalizeIndex(JSON.parse(m[2]));
+                    }
+                } catch (_) {
+                    // try next candidate
+                }
+            }
+            return [];
+        }
+
+        function normalizeIndex(raw) {
+            if (!Array.isArray(raw)) return [];
+            return raw.map(d => ({
+                title: d.title || d.name || '',
+                permalink: d.permalink || d.path || d.url || '#',
+                description: d.description || d.summary || '',
+                body: d.body || d.content || ''
+            }));
+        }
+
+        function initFuse(docs) {
+            searchIndex = docs;
+            fuse = new Fuse(searchIndex, {
+                includeScore: true,
+                threshold: 0.3,
+                minMatchCharLength: 2,
+                keys: [
+                    { name: 'title', weight: 0.6 },
+                    { name: 'description', weight: 0.3 },
+                    { name: 'body', weight: 1.0 }
+                ]
+            });
+        }
+
+        // Kick off loading (wait for Fuse to be available)
+        function whenFuseReady(cb) {
+            if (window.Fuse) return cb();
+            const start = Date.now();
+            (function check() {
+                if (window.Fuse) return cb();
+                if (Date.now() - start > 5000) return cb(); // timeout after 5s to avoid blocking
+                setTimeout(check, 30);
+            })();
+        }
+        function bootSearch() {
+            whenFuseReady(() => {
+                // Prefer preloaded window.searchIndex if it appears shortly
+                const start = Date.now();
+                (function waitForWindowIndex() {
+                    if (Array.isArray(window.searchIndex) && window.searchIndex.length) {
+                        initFuse(normalizeIndex(window.searchIndex));
+                        return;
+                    }
+                    if (Date.now() - start > 5000) {
+                        // Fallback to fetching
+                        loadSearchIndex().then(initFuse);
+                        return;
+                    }
+                    setTimeout(waitForWindowIndex, 30);
+                })();
+            });
+        }
+        bootSearch();
+
+        // Modal functionality
+                const searchModal = document.getElementById('search-modal');
+                const modalSearchInput = document.getElementById('modal-search-input');
+                const modalSearchResults = document.getElementById('modal-search-results');
+                let suppressOutsideCloseUntil = 0;
+
+        function openSearch(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            // Delay opening to avoid being closed by the same click event that triggered it
+            suppressOutsideCloseUntil = Date.now() + 200;
+            setTimeout(() => {
+                searchModal.classList.remove('hidden');
+                setTimeout(() => modalSearchInput.focus(), 100);
+            }, 0);
+        }
+
+        function closeSearch() {
+            searchModal.classList.add('hidden');
+            modalSearchInput.value = '';
+            modalSearchResults.innerHTML = '<div class="p-4 text-gray-400 text-center">Start typing to search...</div>';
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                openSearch(e);
+            }
+            if (e.key === 'Escape') {
+                closeSearch();
+            }
+        });
+
+        // Modal click outside to close
+
+        document.addEventListener('click', function(e) {
+            if (Date.now() < suppressOutsideCloseUntil) return;
+            if (!searchModal.classList.contains('hidden')) {
+                const panel = document.getElementById('search-modal-panel');
+                if (panel && !panel.contains(e.target)) {
+                    closeSearch();
+                }
+            }
+        });
+
+        // Search input handler
+        modalSearchInput.addEventListener('input', function(e) {
+            const query = e.target.value.trim();
+
+            if (query.length < 2) {
+                modalSearchResults.innerHTML = '<div class="p-4 text-gray-400 text-center">Start typing to search...</div>';
+                return;
+            }
+
+            if (!fuse) {
+                modalSearchResults.innerHTML = '<div class="p-4 text-gray-400 text-center">Search index loading...</div>';
+                return;
+            }
+
+            const results = fuse.search(query, { limit: 10 });
+            displayModalSearchResults(results);
+        });
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+        }
+
+        function displayModalSearchResults(results) {
+            if (results.length === 0) {
+                modalSearchResults.innerHTML = '<div class="p-4 text-gray-400 text-center">No results found.</div>';
+                return;
+            }
+
+            const html = results.map(result => {
+                const item = result.item;
+                const rawExcerpt = item.description || item.body || '';
+                const excerpt = rawExcerpt.substring(0, 200) + (rawExcerpt.length > 200 ? '...' : '');
+                return `
+                    <a href="${item.permalink}" class="block p-4 hover:bg-gray-700 border-b border-gray-700 last:border-b-0 transition-colors">
+                        <div class="font-semibold text-white mb-1">${escapeHtml(item.title)}</div>
+                        <div class="text-sm text-gray-400 leading-relaxed">${escapeHtml(excerpt)}</div>
+                    </a>
+                `;
+            }).join('');
+
+            modalSearchResults.innerHTML = html;
+        }
+
+        // Keyboard navigation in modal
+        let selectedIndex = -1;
+
+        modalSearchInput.addEventListener('keydown', function(e) {
+            const items = modalSearchResults.querySelectorAll('a');
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+                updateModalSelection(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                selectedIndex = Math.max(selectedIndex - 1, -1);
+                updateModalSelection(items);
+            } else if (e.key === 'Enter' && selectedIndex >= 0 && items[selectedIndex]) {
+                e.preventDefault();
+                items[selectedIndex].click();
+            }
+        });
+
+        function updateModalSelection(items) {
+            items.forEach((item, index) => {
+                if (index === selectedIndex) {
+                    item.classList.add('bg-gray-700');
+                } else {
+                    item.classList.remove('bg-gray-700');
+                }
+            });
+        }
+
+        // Mobile menu functionality
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuToggle && mobileMenu) {
+            mobileMenuToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+    <script>
+        // Mermaid initialization
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark'
+        });
+    </script>
+    <script>
+        // KaTeX manual rendering for math blocks
+        document.addEventListener("DOMContentLoaded", function() {
+            // Wait for KaTeX to be available
+            if (typeof katex === 'undefined') {
+                console.error('KaTeX is not loaded');
+                return;
+            }
+            
+            // Render display math blocks (created by math shortcode)
+            document.querySelectorAll('.math-block').forEach(function(element) {
+                try {
+                    katex.render(element.textContent, element, {
+                        displayMode: true,
+                        throwOnError: false
+                    });
+                } catch (e) {
+                    console.error('KaTeX render error:', e);
+                }
+            });
+            
+            // Render inline math with $ delimiters
+            function renderInlineMath(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    const text = node.textContent;
+                    const regex = /\$([^\$]+)\$/g;
+                    if (regex.test(text)) {
+                        const span = document.createElement('span');
+                        let lastIndex = 0;
+                        text.replace(regex, function(match, tex, offset) {
+                            span.appendChild(document.createTextNode(text.slice(lastIndex, offset)));
+                            const mathSpan = document.createElement('span');
+                            try {
+                                katex.render(tex, mathSpan, {displayMode: false, throwOnError: false});
+                            } catch (e) {
+                                mathSpan.textContent = match;
+                            }
+                            span.appendChild(mathSpan);
+                            lastIndex = offset + match.length;
+                        });
+                        span.appendChild(document.createTextNode(text.slice(lastIndex)));
+                        node.parentNode.replaceChild(span, node);
+                    }
+                } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE') {
+                    Array.from(node.childNodes).forEach(renderInlineMath);
+                }
+            }
+            
+            // Process inline math in content
+            const content = document.querySelector('main');
+            if (content) {
+                renderInlineMath(content);
+            }
+        });
+    </script>
+
+    
+
+    
+    <footer class="bg-primary mt-16 text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 py-8 text-right">
+            
+            <nav class="flex flex-wrap gap-x-4 gap-y-2 text-sm mb-4 justify-end">
+                
+                
+                <a href="&#x2F;terms" class="hover:text-gray-200 underline-offset-2 hover:underline"
+                   >
+                    Terms of Service
+                </a>
+                
+                
+                
+                <a href="&#x2F;privacy" class="hover:text-gray-200 underline-offset-2 hover:underline"
+                   >
+                    Privacy Policy
+                </a>
+                
+                
+                
+                <a href="&#x2F;contact" class="hover:text-gray-200 underline-offset-2 hover:underline"
+                   >
+                    Contact
+                </a>
+                
+                
+            </nav>
+            
+
+            <div class="text-xs text-gray-500 text-right">
+                
+                    © HAHWUL. All rights reserved.
+                
+            </div>
+        </div>
+    </footer>
+    
+</body>
+</html>

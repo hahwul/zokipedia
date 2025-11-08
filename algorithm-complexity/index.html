@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Example] Algorithm Complexity - Zokipedia</title>
+    <meta name="description" content="A practical, math-backed guide to time&#x2F;space complexity: definitions, classes, pitfalls, measurement, data structures, and key formulas.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48">
+
+    <!-- mermaid -->
+    <script src="https://zokipedia.hahwul.com/js/mermaid.min.js"></script>
+
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://zokipedia.hahwul.com/js/katex/katex.min.css">
+    <script src="https://zokipedia.hahwul.com/js/katex/katex.min.js"></script>
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="https://zokipedia.hahwul.com/css/tailwind.min.css">
+
+    <!-- Custom SCSS (compiled to CSS) -->
+    <link href="/style.css" rel="stylesheet">
+
+    <!-- Fuse.js for search -->
+    <script src="https://zokipedia.hahwul.com/js/fuse.min.js" defer></script>
+
+    
+</head>
+<body class="bg-primary text-gray-100 min-h-screen">
+    
+    
+    
+    
+    
+    
+    <header class="fixed top-0 z-50 w-full bg-primary"
+            style="height: 80px;">
+        <div class="flex items-center justify-between h-full max-w-full px-4 mx-auto">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a href="/" class="text-xl font-bold text-white hover:text-blue-400 transition-colors">
+                    Zokipedia
+                </a>
+            </div>
+
+            <!-- Right side: Navigation Links + Search + Sub Logo -->
+            <div class="flex items-center gap-4">
+                <!-- Navigation Links from config -->
+                
+                <nav class="hidden md:flex items-center gap-3">
+
+                    
+                    <a href="&#x2F;all-posts"
+                       class="flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-secondary"
+                       >
+                        
+                        <span class="hidden lg:inline">All posts</span>
+                    </a>
+                    
+                    <a href="https:&#x2F;&#x2F;github.com&#x2F;hahwul&#x2F;zokipedia"
+                       class="flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-secondary"
+                       target="_blank" rel="noopener noreferrer">
+                        
+                        <span class="nav-icon" data-icon="github">
+                            
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            
+                        </span>
+                        
+                        <span class="hidden lg:inline">GitHub</span>
+                    </a>
+                    
+                </nav>
+
+                <!-- Mobile Navigation Menu -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-toggle" class="p-2 text-gray-300 hover:text-white transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+                
+
+                <!-- Search -->
+                <div class="relative">
+                    <button class="px-4 py-2 text-sm hover:border border-gray-700 rounded-full text-left text-gray-400 hover:bg-tertiary transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center gap-3 min-w-48" onclick="openSearch()">
+                        <span class="hidden sm:inline">Search...</span>
+                        <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <div class="hidden sm:flex items-center gap-1 text-xs px-2 py-0.5 rounded ml-auto">
+                            <span>⌘</span><span>K</span>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Sub Logo -->
+                
+                <div class="flex items-center ml-2">
+                    
+                    <a href="https:&#x2F;&#x2F;www.hahwul.com"
+                       class="flex items-center p-1 rounded-lg hover:bg-secondary transition-colors"
+                       target="_blank" rel="noopener noreferrer"
+                       title="Hahwul Logo">
+                        <img src="https:&#x2F;&#x2F;www.hahwul.com&#x2F;images&#x2F;logo.png"
+                             alt="Hahwul Logo"
+                             class="rounded-md"
+                             width="60"
+                             height="60"
+                             loading="lazy">
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        
+        <div id="mobile-menu" class="hidden md:hidden bg-primary border-t border-gray-800">
+            <nav class="px-4 py-3 space-y-1">
+                
+                <a href="&#x2F;all-posts"
+                   class="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-secondary"
+                   >
+                    
+                    All posts
+                </a>
+                
+                <a href="https:&#x2F;&#x2F;github.com&#x2F;hahwul&#x2F;zokipedia"
+                   class="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-secondary"
+                   target="_blank" rel="noopener noreferrer">
+                    
+                    <span class="nav-icon" data-icon="github">
+                        <!-- Same icon SVGs as above -->
+                        
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        
+                    </span>
+                    
+                    GitHub
+                </a>
+                
+            </nav>
+        </div>
+        
+    </header>
+    
+    
+
+    <main style="padding-top: 80px;">
+        
+<div class="flex">
+    <!-- Table of Contents - Left Sidebar -->
+    <nav class="toc-sidebar hidden lg:block w-72 fixed left-0 overflow-y-auto p-8 bg-secondary/20 backdrop-blur-sm">
+        <div class="space-y-3">
+            <h3 class="text-sm font-bold text-gray-300 uppercase tracking-wider mb-4">Table of Contents</h3>
+            <div id="toc" class="space-y-1">
+                <!-- TOC will be generated by JavaScript -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="flex-1 lg:ml-72">
+        <article class="max-w-7xl mx-auto px-8 py-12">
+            <!-- Page Header -->
+            <header class="mb-12">
+                
+                <div class="flex items-center justify-between text-sm text-gray-400 mb-6">
+                    <div>
+                        
+                        <span class="text-gray-300">Updated November 06, 2025</span>
+                        
+                    </div>
+
+
+                </div>
+                
+
+                
+
+                <h1 class="text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">[Example] Algorithm Complexity</h1>
+                <div class="flex items-center gap-4 mt-2">
+                    <select id="language-select" class="bg-transparent text-white rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="https:&#x2F;&#x2F;zokipedia.hahwul.com&#x2F;algorithm-complexity&#x2F;" selected>EN</option>
+                        
+                        
+                        <option value="https:&#x2F;&#x2F;zokipedia.hahwul.com&#x2F;ko&#x2F;algorithm-complexity&#x2F;">KO</option>
+                        
+                        
+                        
+                        
+                    </select>
+                    
+                    
+                    
+                    
+                    <a href="https:&#x2F;&#x2F;github.com&#x2F;hahwul&#x2F;zokipedia&#x2F;edit&#x2F;main&#x2F;content&#x2F;algorithm-complexity&#x2F;index.md" class="text-sm text-gray-400 hover:text-white underline-offset-2 hover:underline" target="_blank" rel="noopener noreferrer">Edit this page</a>
+                    
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div id="page-content" class="prose prose-xl prose-invert max-w-none leading-relaxed">
+                <p>Understanding algorithmic complexity is essential for writing efficient, scalable software and for communicating performance trade-offs. This guide combines precise definitions with practical tips, common pitfalls, and reference formulas you can use in day-to-day engineering.</p>
+<h2 id="what-do-we-measure">What do we measure?</h2>
+<ul>
+<li>Time complexity: how running time scales with input size <code>n</code> under a chosen model of computation (often a unit-cost RAM model with word size w = Θ(log n)).</li>
+<li>Space complexity: how memory usage scales with <code>n</code> (peak or additional space).</li>
+<li>Input size: number of items (<code>n</code> elements), bit-length of numeric values, number of vertices/edges <code>(V, E)</code>, etc. Always state which input model you use.</li>
+</ul>
+<p>Real-world note: the same asymptotic complexity can lead to very different wall-clock performance due to constants, memory locality, parallelism, and hardware effects.</p>
+<h2 id="asymptotic-notation-precise-definitions">Asymptotic notation (precise definitions)</h2>
+<p>Let <code>f(n)</code> and <code>g(n)</code> be nonnegative for sufficiently large <code>n</code>.</p>
+<ul>
+<li>
+<p>Big-O (upper bound):
+<span class="math-block">f(n) = O(g(n)) \iff \exists c&gt;0,\, n_0\ge 1:\ \forall n\ge n_0,\ 0 \le f(n) \le c\,g(n)</span>
+</p>
+</li>
+<li>
+<p>Big-Ω (lower bound):
+<span class="math-block">f(n) = \Omega(g(n)) \iff \exists c&gt;0,\, n_0:\ \forall n\ge n_0,\ f(n) \ge c\,g(n)</span>
+</p>
+</li>
+<li>
+<p>Big-Θ (tight bound):
+<span class="math-block">f(n) = \Theta(g(n)) \iff f(n)=O(g(n))\ \text{and}\ f(n)=\Omega(g(n))</span>
+</p>
+</li>
+<li>
+<p>little-o (strictly smaller):
+<span class="math-block">f(n) = o(g(n)) \iff \lim_{n\to\infty} \frac{f(n)}{g(n)} = 0</span>
+</p>
+</li>
+<li>
+<p>little-ω (strictly larger):
+<span class="math-block">f(n) = \omega(g(n)) \iff \lim_{n\to\infty} \frac{f(n)}{g(n)} = \infty</span>
+</p>
+</li>
+</ul>
+<p>Worst-case, average-case, and amortized bounds each use these notations—always specify which one you mean.</p>
+<h2 id="common-complexity-classes-with-examples">Common complexity classes (with examples)</h2>
+<ul>
+<li>Constant: <code>O(1)</code> — array indexing, stack push/pop (amortized for dynamic arrays).</li>
+<li>Inverse Ackermann: <code>O(α(n))</code> — nearly constant; disjoint set union-find with path compression + union by rank.</li>
+<li>Logarithmic: <code>O(log n)</code> — binary search; height of balanced BSTs; divide-by-2 loops.</li>
+<li>Polylogarithmic: <code>O(log^k n)</code> — some multi-level structures and index trees.</li>
+<li>Sublinear: <code>O(√n)</code> — trial division primality bound; 2D grid radius scans.</li>
+<li>Linear: <code>O(n)</code> — single pass over an array; counting; BFS on adjacency lists is <code>O(V+E)</code>.</li>
+<li>Linearithmic: <code>O(n log n)</code> — mergesort, heapsort, typical quicksort average.</li>
+<li>Quadratic/Cubic/Polynomial: <code>O(n^2)</code>, <code>O(n^3)</code>, <code>O(n^k)</code> — nested loops over independent dimensions; classical matrix multiplication <code>O(n^3)</code>.</li>
+<li>Near-linear with bounded keys: <code>O(n + k)</code> — counting/radix sort on small integer ranges; <code>k</code> = key range.</li>
+<li>Quasi-polynomial: <code>O(2^{(\log n)^c})</code> — arises in some approximation/derandomization results.</li>
+<li>Exponential: <code>O(c^n)</code> — brute-force subset search, exact TSP via Held-Karp <code>O(n^2 2^n)</code>.</li>
+<li>Factorial: <code>O(n!)</code> — enumerating permutations.</li>
+</ul>
+<p>Related: fast multiplication <code>O(n^{\log_2 3})</code> (Karatsuba), fast matrix multiply <code>O(n^\omega)</code> with <code>ω &lt; 2.373</code> (theoretical).</p>
+<h2 id="worst-case-average-case-amortized">Worst-case, average-case, amortized</h2>
+<ul>
+<li>Worst-case: bound on the slowest valid input of size <code>n</code>.</li>
+<li>Average-case: expected complexity over a distribution of inputs (distribution must be stated).</li>
+<li>Amortized: average per operation over a sequence where occasional expensive ops occur.
+<ul>
+<li>Example: dynamic array doubling. Total moves across <code>n</code> appends is <code>&lt; 2n</code>, so amortized append is <code>O(1)</code>.</li>
+</ul>
+</li>
+</ul>
+<span class="math-block">\text{Amortized cost} = \frac{\text{Total cost over } n \text{ ops}}{n}</span>
+<h2 id="practical-measurement-and-inference">Practical measurement and inference</h2>
+<p>How to empirically validate complexity:</p>
+<ul>
+<li>Isolate the workload
+<ul>
+<li>Exclude I/O and logging; measure pure compute.</li>
+<li>Warm up (JITs, caches); then time multiple runs.</li>
+</ul>
+</li>
+<li>Vary problem size <code>n</code>
+<ul>
+<li>Use logarithmic steps (e.g., n = 2^k). Ensure enough data points.</li>
+<li>For <code>n \log n</code>, plot <code>T(n)/n</code> vs <code>\log n</code> (flat line suggests <code>n \log n</code>).</li>
+</ul>
+</li>
+<li>Use log–log plots
+<ul>
+<li>Fit a line to <code>(x, y) = (\log n, \log T(n))</code>. Slope ≈ polynomial exponent.
+<span class="math-block">s \approx \frac{\log T(n_2) - \log T(n_1)}{\log n_2 - \log n_1}</span>
+</li>
+</ul>
+</li>
+<li>Statistics
+<ul>
+<li>Use medians or trimmed means; report variance.</li>
+<li>Remove outliers; pin CPU; avoid thermal throttling.</li>
+</ul>
+</li>
+<li>Space profiling
+<ul>
+<li>Track peak usage, allocation counts, and per-element overhead.</li>
+<li>Consider GC/allocator metadata and fragmentation.</li>
+</ul>
+</li>
+</ul>
+<p>Caution: microbenchmarks can be misleading due to dead-code elimination, branch prediction, prefetching, and caching. Validate with profilers and counters when possible.</p>
+<h2 id="data-structures-at-a-glance-selected-ops">Data structures at a glance (selected ops)</h2>
+<ul>
+<li>Static array
+<ul>
+<li>Index: <code>O(1)</code></li>
+<li>Search: <code>O(n)</code> (linear), <code>O(log n)</code> if sorted + binary search</li>
+<li>Insert/delete at index: <code>O(n)</code> due to shifts</li>
+</ul>
+</li>
+<li>Dynamic array (amortized doubling)
+<ul>
+<li>Append: <code>O(1)</code> amortized, <code>O(n)</code> worst when resizing</li>
+<li>Insert/delete in middle: <code>O(n)</code></li>
+</ul>
+</li>
+<li>Singly/doubly linked list
+<ul>
+<li>Prepend: <code>O(1)</code>; Append: <code>O(1)</code> with tail pointer; Search: <code>O(n)</code>; Random index: <code>O(n)</code></li>
+</ul>
+</li>
+<li>Stack / Queue / Deque
+<ul>
+<li>Push/Pop/Enqueue/Dequeue: <code>O(1)</code> (amortized or worst-case depending on implementation)</li>
+</ul>
+</li>
+<li>Hash table (separate chaining / open addressing)
+<ul>
+<li>Average: find/insert/delete <code>O(1)</code> at healthy load factor</li>
+<li>Worst-case: <code>O(n)</code> (adversarial collisions)</li>
+<li>Resizing: <code>O(n)</code> occasionally; amortized constant per op</li>
+</ul>
+</li>
+<li>Ordered map/set (balanced BST: red–black, AVL, B-tree)
+<ul>
+<li>Find/insert/delete: <code>O(log n)</code>; predecessor/successor: <code>O(log n)</code>; iteration: <code>O(n)</code></li>
+</ul>
+</li>
+<li>Heap (binary heap)
+<ul>
+<li>Find-min: <code>O(1)</code>; insert: <code>O(log n)</code>; extract-min: <code>O(log n)</code>; build-heap: <code>O(n)</code></li>
+<li>Decrease-key: <code>O(log n)</code> (Fibonacci heap: amortized <code>O(1)</code>, but large constants)</li>
+</ul>
+</li>
+<li>Disjoint set (union–find)
+<ul>
+<li>With path compression + union by rank/size: <code>O(α(n))</code> amortized per op</li>
+</ul>
+</li>
+<li>Trie / prefix tree (alphabet size <code>σ</code>)
+<ul>
+<li>Insert/lookup: <code>O(L)</code> for key length <code>L</code>; memory can be large (<code>σ</code> fans)</li>
+</ul>
+</li>
+<li>Bloom filter
+<ul>
+<li>Membership test (no deletes): <code>O(k)</code> time, <code>O(m)</code> space, false positives allowed
+<span class="math-block">p \approx \left(1 - e^{-kn&#x2F;m}\right)^k,\quad k_{\text{opt}} = \frac{m}{n}\ln 2,\quad p_{\min} \approx (0.6185)^{m&#x2F;n}</span>
+</li>
+</ul>
+</li>
+</ul>
+<p>Graph representations:</p>
+<ul>
+<li>Adjacency list: space <code>O(V+E)</code>; BFS/DFS <code>O(V+E)</code></li>
+<li>Adjacency matrix: space <code>O(V^2)</code>; edge check <code>O(1)</code></li>
+</ul>
+<p>Classic graph algorithm costs:</p>
+<ul>
+<li>BFS/DFS: <code>O(V+E)</code></li>
+<li>Dijkstra (nonnegative weights): binary heap <code>O((V+E)\log V)</code>, Fibonacci heap <code>O(E + V \log V)</code></li>
+<li>0–1 BFS: <code>O(V+E)</code> with deque</li>
+<li>MST: Kruskal <code>O(E \log V)</code>, Prim (binary heap) <code>O(E \log V)</code></li>
+</ul>
+<p>Sorting and selection:</p>
+<ul>
+<li>Comparison sorting lower bound: <code>Ω(n \log n)</code></li>
+<li>Mergesort/heapsort: <code>O(n \log n)</code>; Quicksort: average <code>O(n \log n)</code>, worst <code>O(n^2)</code></li>
+<li>Counting/radix sort: <code>O(n + k)</code> for key range <code>k</code></li>
+<li>Quickselect (k-th order statistic): average <code>O(n)</code>, worst <code>O(n^2)</code>; Median-of-medians worst-case <code>O(n)</code></li>
+</ul>
+<h2 id="recurrences-and-key-formulas">Recurrences and key formulas</h2>
+<p>Sums and approximations:</p>
+<ul>
+<li>
+<p>Sum of first n:
+<span class="math-block">\sum_{i=1}^{n} i = \frac{n(n+1)}{2}</span>
+</p>
+</li>
+<li>
+<p>Geometric series:
+<span class="math-block">\sum_{i=0}^{n} r^i = \frac{r^{n+1} - 1}{r - 1}\quad (r \ne 1)</span>
+</p>
+</li>
+<li>
+<p>Harmonic numbers:
+<span class="math-block">H_n = \sum_{i=1}^{n} \frac{1}{i} = \ln n + \gamma + \Theta\!\left(\frac{1}{n}\right)</span>
+
+where <code>γ</code> is the Euler–Mascheroni constant.</p>
+</li>
+<li>
+<p>Log-factorial / Stirling:
+<span class="math-block">\log n! = \Theta(n \log n),\quad
+  n! \sim \sqrt{2\pi n}\left(\frac{n}{e}\right)^{n}</span>
+</p>
+</li>
+</ul>
+<p>Recurrence examples:</p>
+<ul>
+<li>
+<p>Binary search:
+<span class="math-block">T(n) = T(n&#x2F;2) + \Theta(1) \ \Rightarrow\ T(n)=\Theta(\log n)</span>
+</p>
+</li>
+<li>
+<p>Mergesort:
+<span class="math-block">T(n) = 2T(n&#x2F;2) + \Theta(n) \ \Rightarrow\ T(n)=\Theta(n \log n)</span>
+</p>
+</li>
+<li>
+<p>Karatsuba multiplication:
+<span class="math-block">T(n) = 3T(n&#x2F;2) + O(n) \ \Rightarrow\ T(n)=O\!\left(n^{\log_2 3}\right)\approx O(n^{1.585})</span>
+</p>
+</li>
+<li>
+<p>Strassen matrix multiply:
+<span class="math-block">T(n) = 7T(n&#x2F;2) + O(n^2) \ \Rightarrow\ T(n)=O\!\left(n^{\log_2 7}\right)\approx O(n^{2.807})</span>
+</p>
+</li>
+</ul>
+<p>Master theorem (divide-and-conquer):
+<span class="math-block">T(n) = a\,T(n&#x2F;b) + f(n),\ a\ge 1,\ b&gt;1 \\
+T(n) =
+\begin{cases}
+\Theta\!\left(n^{\log_b a}\right) &amp; \text{if } f(n)=O\!\left(n^{\log_b a - \epsilon}\right) \\
+\Theta\!\left(n^{\log_b a}\log n\right) &amp; \text{if } f(n)=\Theta\!\left(n^{\log_b a}\right) \\
+\Theta\!\left(f(n)\right) &amp; \text{if } f(n)=\Omega\!\left(n^{\log_b a + \epsilon}\right)\ \text{and regularity holds}
+\end{cases}</span>
+</p>
+<p>Akra–Bazzi (general form intuition):
+Given <span class="math-block">T(x) = \sum_{i=1}^{k} a_i\,T(b_i x) + g(x)</span>
+, find <code>p</code> such that <span class="math-block">\sum a_i b_i^p = 1</span>
+. Then
+<span class="math-block">T(x) = \Theta\!\left(x^p\left(1 + \int_{1}^{x} \frac{g(u)}{u^{p+1}}\,du\right)\right)</span>
+</p>
+<h2 id="parallelism-work-and-span">Parallelism: work and span</h2>
+<p>Let <code>T1</code> be total work (1 core), <code>T∞</code> be span/critical path (infinite cores). With <code>P</code> processors:</p>
+<ul>
+<li>Lower bound:
+<span class="math-block">T_P \ge \max\!\left(\frac{T_1}{P},\ T_{\infty}\right)</span>
+</li>
+<li>Amdahl’s law (fixed workload, parallel fraction <code>P_f</code>):
+<span class="math-block">S(N) = \frac{1}{(1-P_f) + \frac{P_f}{N}}</span>
+</li>
+<li>Gustafson’s law (scaled workloads):
+<span class="math-block">S(N) = N - (1-P_f)(N-1)</span>
+</li>
+</ul>
+<p>Implication: asymptotic improvements that reduce span (dependencies) often matter more than raw work on highly parallel hardware.</p>
+<h2 id="memory-hierarchy-and-i-o-awareness">Memory hierarchy and I/O awareness</h2>
+<ul>
+<li>Algorithms with the same <code>O(n)</code> can vary by orders of magnitude based on locality and block transfers.</li>
+<li>Cache-aware/oblivious designs optimize transfers between layers (L1/L2/LLC/DRAM/disk).</li>
+<li>External memory (I/O) model tracks block size <code>B</code> and memory size <code>M</code>; aim to minimize cache misses and scans.</li>
+</ul>
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+<li>Ignoring constants and memory: <code>O(n)</code> with scattered random access can be slower than <code>O(n log n)</code> with tight sequential scans for real <code>n</code>.</li>
+<li>Comparing apples to oranges: average-case of algorithm A vs worst-case of algorithm B.</li>
+<li>Assuming distribution: hash tables need a good hash function and controlled load factors; adversarial inputs can degrade to <code>O(n)</code>.</li>
+<li>Mistaking amortized for worst-case: dynamic array append is not guaranteed <code>O(1)</code> per operation.</li>
+<li>Small <code>n</code> realities: lower-order terms dominate; choose simpler algorithms for tiny inputs.</li>
+<li>Overfitting benchmarks: JIT, branch prediction, dead-code elimination, and warmup can skew results.</li>
+<li>Ignoring I/O/network: Many systems are I/O-bound or latency-bound, not CPU-bound.</li>
+</ul>
+<h2 id="putting-it-to-work-a-quick-checklist">Putting it to work: a quick checklist</h2>
+<ol>
+<li>Define the input model and size parameters (<code>n</code>, <code>V</code>, <code>E</code>, key range <code>k</code>, string length <code>L</code>).</li>
+<li>Choose meaningful complexity targets (worst/average/amortized) and justify them.</li>
+<li>Consider data-structure trade-offs (time vs space vs simplicity).</li>
+<li>Validate with both math (recurrences, bounds) and measurement (multiple <code>n</code>, log–log fits).</li>
+<li>Watch memory behavior (peak, locality, allocations) and parallel scalability (span).</li>
+<li>Add assertions/metrics to prevent regressions (budget in CI, performance tests).</li>
+</ol>
+<h2 id="mathematical-appendix-handy-references">Mathematical appendix (handy references)</h2>
+<ul>
+<li>
+<p>Sum of logs:
+<span class="math-block">\sum_{i=1}^{n} \log i = \log n! = \Theta(n \log n)</span>
+</p>
+</li>
+<li>
+<p>Sum of squares and cubes:
+<span class="math-block">\sum_{i=1}^{n} i^2 = \frac{n(n+1)(2n+1)}{6},\quad
+  \sum_{i=1}^{n} i^3 = \left(\frac{n(n+1)}{2}\right)^2</span>
+</p>
+</li>
+<li>
+<p>Comparing <code>n^a</code> vs <code>n \log n</code>:</p>
+<ul>
+<li>If <code>a &gt; 1</code>, then <code>n^a = ω(n \log n)</code>.</li>
+<li>If <code>a = 1</code>, then <code>n \log n = ω(n)</code>.</li>
+</ul>
+</li>
+</ul>
+<p>With these tools—precise notation, realistic measurement, and a sense for data-structure trade-offs—you can analyze, compare, and improve algorithms with confidence.</p>
+
+            </div>
+
+            <!-- Navigation -->
+            
+        </article>
+    </div>
+</div>
+
+<!-- Mobile TOC Toggle -->
+<button id="mobile-toc-toggle" class="lg:hidden fixed bottom-8 right-8 bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 rounded-full shadow-2xl hover:shadow-blue-500/30 hover:scale-110 transition-all duration-300 z-50">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+</button>
+
+<!-- Mobile TOC Overlay -->
+<div id="mobile-toc" class="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden">
+    <div class="fixed right-0 top-0 h-full w-80 bg-secondary/95 backdrop-blur-md border-l border-gray-700/50 p-8 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h3 class="text-lg font-bold text-gray-300 uppercase tracking-wider">Table of Contents</h3>
+            <button id="close-mobile-toc" class="text-gray-400 hover:text-white p-2 rounded-full hover:bg-gray-700/50 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div id="mobile-toc-content" class="space-y-1">
+            <!-- TOC content will be duplicated here -->
+        </div>
+    </div>
+</div>
+
+<script>
+    // Language Switcher
+    const languageSelect = document.getElementById('language-select');
+    if (languageSelect) {
+        languageSelect.addEventListener('change', function() {
+            window.location.href = this.value;
+        });
+    }
+
+    // Generate Table of Contents
+    function generateTOC() {
+        const content = document.getElementById('page-content');
+        const toc = document.getElementById('toc');
+        const mobileTocContent = document.getElementById('mobile-toc-content');
+
+        if (!content || !toc) {
+            return;
+        }
+
+        const headings = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+        if (headings.length === 0) {
+            return;
+        }
+
+        let tocHTML = '';
+
+        headings.forEach((heading, index) => {
+            // Create ID if not exists
+            if (!heading.id) {
+                heading.id = heading.textContent.toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/(^-|-$)/g, '');
+            }
+
+            const level = parseInt(heading.tagName.charAt(1));
+            const indent = (level - 1) * 12;
+
+            tocHTML += `
+                <a href="#${heading.id}"
+                   class="toc-link relative block rounded-lg hover:text-white transition-all duration-200"
+                   style="margin-left: ${indent}px; padding-left: calc(${indent}px + 12px)"
+                   data-heading="${heading.id}">
+                    ${heading.textContent}
+                </a>
+            `;
+        });
+
+        toc.innerHTML = tocHTML;
+        if (mobileTocContent) {
+            mobileTocContent.innerHTML = tocHTML;
+        }
+
+        // Add click handlers for TOC links
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+
+                    // Close mobile TOC if open
+                    const mobileTocModal = document.getElementById('mobile-toc');
+                    if (mobileTocModal) {
+                        mobileTocModal.classList.add('hidden');
+                    }
+
+                    // Update highlight after scroll
+                    setTimeout(() => {
+                        highlightCurrentSection();
+                    }, 500);
+                }
+            });
+        });
+    }
+
+    // Highlight current section in TOC
+    function highlightCurrentSection() {
+        const headings = document.querySelectorAll('#page-content h1, #page-content h2, #page-content h3, #page-content h4, #page-content h5, #page-content h6');
+        const tocLinks = document.querySelectorAll('.toc-link');
+
+        if (headings.length === 0 || tocLinks.length === 0) {
+            return;
+        }
+
+        let currentHeading = null;
+        let closestDistance = Infinity;
+
+        // Find the heading closest to the top of the viewport
+        headings.forEach(heading => {
+            const rect = heading.getBoundingClientRect();
+            const distance = Math.abs(rect.top - 120); // Account for header height
+
+            if (rect.top <= 160 && distance < closestDistance) {
+                closestDistance = distance;
+                currentHeading = heading.id;
+            }
+        });
+
+        // If no heading is above the fold, highlight the first one when we're at the top
+        if (!currentHeading && headings.length > 0) {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop < 200) {
+                currentHeading = headings[0].id;
+            }
+        }
+
+        // Update TOC links
+        tocLinks.forEach(link => {
+            const headingId = link.getAttribute('data-heading');
+            if (headingId === currentHeading) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+
+    // Mobile TOC functionality
+    const mobileTocToggle = document.getElementById('mobile-toc-toggle');
+    const mobileToc = document.getElementById('mobile-toc');
+    const closeMobileToc = document.getElementById('close-mobile-toc');
+
+    if (mobileTocToggle) {
+        mobileTocToggle.addEventListener('click', () => {
+            mobileToc.classList.remove('hidden');
+        });
+    }
+
+    if (closeMobileToc) {
+        closeMobileToc.addEventListener('click', () => {
+            mobileToc.classList.add('hidden');
+        });
+    }
+
+    // Close mobile TOC when clicking overlay
+    if (mobileToc) {
+        mobileToc.addEventListener('click', (e) => {
+            if (e.target === mobileToc) {
+                mobileToc.classList.add('hidden');
+            }
+        });
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        generateTOC();
+
+        // Initial highlight
+        setTimeout(() => {
+            highlightCurrentSection();
+        }, 100);
+
+        // Update TOC highlight on scroll with throttling
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
+            }
+            scrollTimeout = setTimeout(highlightCurrentSection, 50);
+        });
+
+        // Update on resize
+        window.addEventListener('resize', highlightCurrentSection);
+    });
+</script>
+
+    </main>
+
+    <!-- Search Modal -->
+    <div id="search-modal" class="fixed inset-0 bg-transparent bg-opacity-70 backdrop-blur-sm z-50 hidden">
+        <div class="flex items-start justify-center min-h-screen pt-16 px-4">
+            <div id="search-modal-panel" class="bg-primary border border-gray-700 rounded-lg w-full max-w-2xl shadow-xl">
+                <div class="p-4 border-b border-gray-700">
+                    <div class="relative">
+                        <input
+                            type="text"
+                            id="modal-search-input"
+                            placeholder="Search for anything..."
+                            class="w-full px-4 py-3 text-lg bg-black from-secondary/90 via-secondary/80 to-tertiary/70 backdrop-blur-md border border-gray-500/50 rounded-lg text-gray-100 hover:from-secondary hover:to-tertiary hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 ease-out focus:outline-none focus:ring-4 focus:ring-blue-500/60 placeholder-gray-400"
+                            autofocus
+                        >
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-4">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div id="modal-search-results" class="max-h-96 overflow-y-auto">
+                    <div class="p-4 text-gray-400 text-center">
+                        Start typing to search...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search functionality -->
+    
+    
+    
+    <script defer src="https://zokipedia.hahwul.com/search_index.en.js"></script>
+    <script defer src="https://zokipedia.hahwul.com/search_index.js"></script>
+    <script>
+        // Search functionality (Fuse.js)
+        let fuse;
+        let searchIndex = [];
+
+        async function loadSearchIndex() {
+            // Use preloaded window.searchIndex if available
+            if (Array.isArray(window.searchIndex) && window.searchIndex.length) {
+                return normalizeIndex(window.searchIndex);
+            }
+            const candidates = [
+                "https://zokipedia.hahwul.com/search_index.en.json",
+                "https://zokipedia.hahwul.com/search_index.en.js",
+                "https://zokipedia.hahwul.com/search_index.json",
+                "https://zokipedia.hahwul.com/search_index.js"
+            ];
+
+            for (const url of candidates) {
+                try {
+                    const res = await fetch(url, { cache: 'no-store' });
+                    if (!res.ok) continue;
+
+                    if (url.endsWith('.json')) {
+                        const data = await res.json();
+                        return normalizeIndex(data);
+                    } else {
+                        const text = await res.text();
+                        // window.searchIndex = [...]
+                        let m = text.match(/window\.searchIndex\s*=\s*(\[.*?\]);/s);
+                        if (m) return normalizeIndex(JSON.parse(m[1]));
+                        // var/let/const searchIndex = [...]
+                        m = text.match(/(?:var|let|const)\s+searchIndex\s*=\s*(\[.*?\]);/s);
+                        if (m) return normalizeIndex(JSON.parse(m[1]));
+                        // searchIndex = JSON.parse('...')
+                        m = text.match(/searchIndex\s*=\s*JSON\.parse\(\s*(['"])([\s\S]*?)\1\s*\)/s);
+                        if (m) return normalizeIndex(JSON.parse(m[2]));
+                    }
+                } catch (_) {
+                    // try next candidate
+                }
+            }
+            return [];
+        }
+
+        function normalizeIndex(raw) {
+            if (!Array.isArray(raw)) return [];
+            return raw.map(d => ({
+                title: d.title || d.name || '',
+                permalink: d.permalink || d.path || d.url || '#',
+                description: d.description || d.summary || '',
+                body: d.body || d.content || ''
+            }));
+        }
+
+        function initFuse(docs) {
+            searchIndex = docs;
+            fuse = new Fuse(searchIndex, {
+                includeScore: true,
+                threshold: 0.3,
+                minMatchCharLength: 2,
+                keys: [
+                    { name: 'title', weight: 0.6 },
+                    { name: 'description', weight: 0.3 },
+                    { name: 'body', weight: 1.0 }
+                ]
+            });
+        }
+
+        // Kick off loading (wait for Fuse to be available)
+        function whenFuseReady(cb) {
+            if (window.Fuse) return cb();
+            const start = Date.now();
+            (function check() {
+                if (window.Fuse) return cb();
+                if (Date.now() - start > 5000) return cb(); // timeout after 5s to avoid blocking
+                setTimeout(check, 30);
+            })();
+        }
+        function bootSearch() {
+            whenFuseReady(() => {
+                // Prefer preloaded window.searchIndex if it appears shortly
+                const start = Date.now();
+                (function waitForWindowIndex() {
+                    if (Array.isArray(window.searchIndex) && window.searchIndex.length) {
+                        initFuse(normalizeIndex(window.searchIndex));
+                        return;
+                    }
+                    if (Date.now() - start > 5000) {
+                        // Fallback to fetching
+                        loadSearchIndex().then(initFuse);
+                        return;
+                    }
+                    setTimeout(waitForWindowIndex, 30);
+                })();
+            });
+        }
+        bootSearch();
+
+        // Modal functionality
+                const searchModal = document.getElementById('search-modal');
+                const modalSearchInput = document.getElementById('modal-search-input');
+                const modalSearchResults = document.getElementById('modal-search-results');
+                let suppressOutsideCloseUntil = 0;
+
+        function openSearch(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            // Delay opening to avoid being closed by the same click event that triggered it
+            suppressOutsideCloseUntil = Date.now() + 200;
+            setTimeout(() => {
+                searchModal.classList.remove('hidden');
+                setTimeout(() => modalSearchInput.focus(), 100);
+            }, 0);
+        }
+
+        function closeSearch() {
+            searchModal.classList.add('hidden');
+            modalSearchInput.value = '';
+            modalSearchResults.innerHTML = '<div class="p-4 text-gray-400 text-center">Start typing to search...</div>';
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                openSearch(e);
+            }
+            if (e.key === 'Escape') {
+                closeSearch();
+            }
+        });
+
+        // Modal click outside to close
+
+        document.addEventListener('click', function(e) {
+            if (Date.now() < suppressOutsideCloseUntil) return;
+            if (!searchModal.classList.contains('hidden')) {
+                const panel = document.getElementById('search-modal-panel');
+                if (panel && !panel.contains(e.target)) {
+                    closeSearch();
+                }
+            }
+        });
+
+        // Search input handler
+        modalSearchInput.addEventListener('input', function(e) {
+            const query = e.target.value.trim();
+
+            if (query.length < 2) {
+                modalSearchResults.innerHTML = '<div class="p-4 text-gray-400 text-center">Start typing to search...</div>';
+                return;
+            }
+
+            if (!fuse) {
+                modalSearchResults.innerHTML = '<div class="p-4 text-gray-400 text-center">Search index loading...</div>';
+                return;
+            }
+
+            const results = fuse.search(query, { limit: 10 });
+            displayModalSearchResults(results);
+        });
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+        }
+
+        function displayModalSearchResults(results) {
+            if (results.length === 0) {
+                modalSearchResults.innerHTML = '<div class="p-4 text-gray-400 text-center">No results found.</div>';
+                return;
+            }
+
+            const html = results.map(result => {
+                const item = result.item;
+                const rawExcerpt = item.description || item.body || '';
+                const excerpt = rawExcerpt.substring(0, 200) + (rawExcerpt.length > 200 ? '...' : '');
+                return `
+                    <a href="${item.permalink}" class="block p-4 hover:bg-gray-700 border-b border-gray-700 last:border-b-0 transition-colors">
+                        <div class="font-semibold text-white mb-1">${escapeHtml(item.title)}</div>
+                        <div class="text-sm text-gray-400 leading-relaxed">${escapeHtml(excerpt)}</div>
+                    </a>
+                `;
+            }).join('');
+
+            modalSearchResults.innerHTML = html;
+        }
+
+        // Keyboard navigation in modal
+        let selectedIndex = -1;
+
+        modalSearchInput.addEventListener('keydown', function(e) {
+            const items = modalSearchResults.querySelectorAll('a');
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+                updateModalSelection(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                selectedIndex = Math.max(selectedIndex - 1, -1);
+                updateModalSelection(items);
+            } else if (e.key === 'Enter' && selectedIndex >= 0 && items[selectedIndex]) {
+                e.preventDefault();
+                items[selectedIndex].click();
+            }
+        });
+
+        function updateModalSelection(items) {
+            items.forEach((item, index) => {
+                if (index === selectedIndex) {
+                    item.classList.add('bg-gray-700');
+                } else {
+                    item.classList.remove('bg-gray-700');
+                }
+            });
+        }
+
+        // Mobile menu functionality
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuToggle && mobileMenu) {
+            mobileMenuToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+    <script>
+        // Mermaid initialization
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark'
+        });
+    </script>
+    <script>
+        // KaTeX manual rendering for math blocks
+        document.addEventListener("DOMContentLoaded", function() {
+            // Wait for KaTeX to be available
+            if (typeof katex === 'undefined') {
+                console.error('KaTeX is not loaded');
+                return;
+            }
+            
+            // Render display math blocks (created by math shortcode)
+            document.querySelectorAll('.math-block').forEach(function(element) {
+                try {
+                    katex.render(element.textContent, element, {
+                        displayMode: true,
+                        throwOnError: false
+                    });
+                } catch (e) {
+                    console.error('KaTeX render error:', e);
+                }
+            });
+            
+            // Render inline math with $ delimiters
+            function renderInlineMath(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    const text = node.textContent;
+                    const regex = /\$([^\$]+)\$/g;
+                    if (regex.test(text)) {
+                        const span = document.createElement('span');
+                        let lastIndex = 0;
+                        text.replace(regex, function(match, tex, offset) {
+                            span.appendChild(document.createTextNode(text.slice(lastIndex, offset)));
+                            const mathSpan = document.createElement('span');
+                            try {
+                                katex.render(tex, mathSpan, {displayMode: false, throwOnError: false});
+                            } catch (e) {
+                                mathSpan.textContent = match;
+                            }
+                            span.appendChild(mathSpan);
+                            lastIndex = offset + match.length;
+                        });
+                        span.appendChild(document.createTextNode(text.slice(lastIndex)));
+                        node.parentNode.replaceChild(span, node);
+                    }
+                } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE') {
+                    Array.from(node.childNodes).forEach(renderInlineMath);
+                }
+            }
+            
+            // Process inline math in content
+            const content = document.querySelector('main');
+            if (content) {
+                renderInlineMath(content);
+            }
+        });
+    </script>
+
+    
+
+    
+    <footer class="bg-primary mt-16 text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 py-8 text-right">
+            
+            <nav class="flex flex-wrap gap-x-4 gap-y-2 text-sm mb-4 justify-end">
+                
+                
+                <a href="&#x2F;terms" class="hover:text-gray-200 underline-offset-2 hover:underline"
+                   >
+                    Terms of Service
+                </a>
+                
+                
+                
+                <a href="&#x2F;privacy" class="hover:text-gray-200 underline-offset-2 hover:underline"
+                   >
+                    Privacy Policy
+                </a>
+                
+                
+                
+                <a href="&#x2F;contact" class="hover:text-gray-200 underline-offset-2 hover:underline"
+                   >
+                    Contact
+                </a>
+                
+                
+            </nav>
+            
+
+            <div class="text-xs text-gray-500 text-right">
+                
+                    © HAHWUL. All rights reserved.
+                
+            </div>
+        </div>
+    </footer>
+    
+</body>
+</html>
