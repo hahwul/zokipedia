@@ -12,10 +12,10 @@
     <div class="relative z-10 max-w-6xl mx-auto px-4 py-0 sm:py-0">
         <!-- Hero -->
         <div class="mx-auto max-w-5xl text-center min-h-screen flex flex-col items-center justify-center">
-            <h1 class="text-7xl sm:text-8xl lg:text-9xl font-black tracking-tight mb-6 text-white">
+            <h1 class="text-7xl sm:text-8xl lg:text-9xl font-black tracking-tight mb-6 bg-gradient-to-br from-white via-blue-100 to-purple-200 bg-clip-text text-transparent animate-gradient leading-tight">
                 Zokipedia
             </h1>
-            <p class="text-xl sm:text-2xl lg:text-3xl text-gray-200/95 mb-12 font-light italic leading-relaxed">
+            <p class="text-xl sm:text-2xl lg:text-3xl text-gray-300 mb-12 font-light leading-relaxed max-w-3xl">
                 {{ config.description }}
             </p>
 
@@ -44,16 +44,17 @@
             <!-- Quick links -->
             <div class="mt-8 sm:mt-12 flex flex-wrap items-center justify-center gap-4">
                 <button
-                    class="w-full max-w-lg px-8 py-5 text-xl bg-gradient-to-r from-secondary/90 via-secondary/80 to-tertiary/70 backdrop-blur-md border border-gray-500/50 rounded-full text-left text-gray-100 hover:from-secondary hover:to-tertiary hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 ease-out focus:outline-none focus:ring-4 focus:ring-blue-500/60 flex items-center justify-between gap-4 shadow-2xl"
+                    class="w-full max-w-lg px-8 py-5 text-xl bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-cyan-600/20 backdrop-blur-md border border-blue-500/30 rounded-2xl text-left text-gray-100 hover:from-blue-600/30 hover:via-purple-600/30 hover:to-cyan-600/30 hover:border-blue-400/50 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-500 ease-out focus:outline-none focus:ring-4 focus:ring-blue-500/60 flex items-center justify-between gap-4 shadow-xl relative overflow-hidden group"
                     onclick="openSearch()"
                 >
-                    <div class="flex items-center gap-4">
-                        <svg class="w-6 h-6 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/10 to-cyan-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="flex items-center gap-4 relative z-10">
+                        <svg class="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                         <span class="font-semibold">Search for anything...</span>
                     </div>
-                    <div class="hidden sm:flex items-center gap-1 text-sm bg-primary px-3 py-1.5 rounded-lg backdrop-blur-sm">
+                    <div class="hidden sm:flex items-center gap-1 text-sm bg-black/30 px-3 py-1.5 rounded-lg backdrop-blur-sm border border-white/10 relative z-10">
                         <span>⌘</span><span>K</span>
                     </div>
                 </button>
@@ -61,14 +62,15 @@
 
             <!-- Recent Articles -->
             {% if section and section.pages %}
-            <div class="mt-8 text-center">
+            <div class="mt-12 text-center">
                 <ul class="space-y-3">
                     {% set_global shown_count = 0 %}
                     {% for page in section.pages %}
                         {% if (not page.extra or not page.extra.hide_from_lists) and shown_count < 6 %}
-                    <li class="text-sm text-gray-400 hover:text-gray-300 transition-colors">
-                        <a href="{{ page.permalink }}" class="hover:underline decoration-blue-400">
-                            <span class="font-medium">{{ page.title }}</span>
+                    <li class="text-sm text-gray-400 hover:text-gray-200 transition-all duration-300">
+                        <a href="{{ page.permalink }}" class="hover:underline decoration-blue-400 decoration-2 underline-offset-4 inline-flex items-center gap-2 group">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-500 group-hover:bg-blue-400 transition-colors"></span>
+                            <span class="font-medium group-hover:text-blue-300 transition-colors">{{ page.title }}</span>
                             {% if page.date %}
                             <span class="text-xs text-gray-500 ml-2">{{ page.date | date(format="%b %d") }}</span>
                             {% endif %}

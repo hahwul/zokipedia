@@ -45,7 +45,7 @@
         <div class="flex items-center justify-between h-full max-w-full px-4 mx-auto">
             <!-- Logo -->
             <div class="flex items-center">
-                <a href="/" class="text-xl font-bold text-white hover:text-blue-400 transition-colors">
+                <a href="/" class="text-xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent hover:from-blue-200 hover:to-purple-200 transition-all duration-300">
                     Zokipedia
                 </a>
             </div>
@@ -58,7 +58,7 @@
 
                     {% for link in config.extra.nav_links %}
                     <a href="{{ link.url }}"
-                       class="flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-secondary"
+                       class="flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:text-white transition-all duration-300 rounded-lg hover:bg-blue-600/20 hover:border-blue-500/30 border border-transparent"
                        {% if link.url is starting_with("http") %}target="_blank" rel="noopener noreferrer"{% endif %}>
                         {% if link.icon %}
                         <span class="nav-icon" data-icon="{{ link.icon }}">
@@ -106,12 +106,12 @@
 
                 <!-- Search -->
                 <div class="relative">
-                    <button class="px-4 py-2 text-sm hover:border border-gray-700 rounded-full text-left text-gray-400 hover:bg-tertiary transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center gap-3 min-w-48" onclick="openSearch()">
+                    <button class="px-4 py-2 text-sm border border-gray-700/50 rounded-full text-left text-gray-400 hover:bg-blue-600/10 hover:border-blue-500/30 hover:text-gray-300 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/50 flex items-center gap-3 min-w-48 backdrop-blur-sm" onclick="openSearch()">
                         <span class="hidden sm:inline">Search...</span>
                         <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                         </svg>
-                        <div class="hidden sm:flex items-center gap-1 text-xs px-2 py-0.5 rounded ml-auto">
+                        <div class="hidden sm:flex items-center gap-1 text-xs px-2 py-0.5 rounded ml-auto bg-gray-800/50 border border-gray-700/50">
                             <span>⌘</span><span>K</span>
                         </div>
                     </button>
@@ -190,16 +190,16 @@
     </main>
 
     <!-- Search Modal -->
-    <div id="search-modal" class="fixed inset-0 bg-transparent bg-opacity-70 backdrop-blur-sm z-50 hidden">
+    <div id="search-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden">
         <div class="flex items-start justify-center min-h-screen pt-16 px-4">
-            <div id="search-modal-panel" class="bg-primary border border-gray-700 rounded-lg w-full max-w-2xl shadow-xl">
-                <div class="p-4 border-b border-gray-700">
+            <div id="search-modal-panel" class="bg-gradient-to-br from-gray-900/95 to-gray-800/95 backdrop-blur-xl border border-blue-500/30 rounded-2xl w-full max-w-2xl shadow-2xl shadow-blue-500/20">
+                <div class="p-4 border-b border-gray-700/50">
                     <div class="relative">
                         <input
                             type="text"
                             id="modal-search-input"
                             placeholder="Search for anything..."
-                            class="w-full px-4 py-3 text-lg bg-black from-secondary/90 via-secondary/80 to-tertiary/70 backdrop-blur-md border border-gray-500/50 rounded-lg text-gray-100 hover:from-secondary hover:to-tertiary hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 ease-out focus:outline-none focus:ring-4 focus:ring-blue-500/60 placeholder-gray-400"
+                            class="w-full px-4 py-3 text-lg bg-black/40 backdrop-blur-md border border-blue-500/30 rounded-xl text-gray-100 hover:border-blue-400/50 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/60 focus:border-blue-400/50 placeholder-gray-400"
                             autofocus
                         >
                         <div class="absolute inset-y-0 right-0 flex items-center pr-4">
@@ -404,9 +404,9 @@
                 const rawExcerpt = item.description || item.body || '';
                 const excerpt = rawExcerpt.substring(0, 200) + (rawExcerpt.length > 200 ? '...' : '');
                 return `
-                    <a href="${item.permalink}" class="block p-4 hover:bg-gray-700 border-b border-gray-700 last:border-b-0 transition-colors">
-                        <div class="font-semibold text-white mb-1">${escapeHtml(item.title)}</div>
-                        <div class="text-sm text-gray-400 leading-relaxed">${escapeHtml(excerpt)}</div>
+                    <a href="${item.permalink}" class="block p-4 hover:bg-blue-600/10 border-b border-gray-700/30 last:border-b-0 transition-all duration-300 group">
+                        <div class="font-semibold text-white mb-1 group-hover:text-blue-300 transition-colors">${escapeHtml(item.title)}</div>
+                        <div class="text-sm text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">${escapeHtml(excerpt)}</div>
                     </a>
                 `;
             }).join('');
